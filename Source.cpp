@@ -28,9 +28,9 @@ bool MyApp::OnInit()
 	return true;
 }
 
-MyFrame::MyFrame() : wxFrame(NULL, wxID_ANY, "Demo01")
+MyFrame::MyFrame() : wxFrame(NULL, wxID_ANY, "GFK-Projekt")
 {
-	SetTitle(_("Demo"));
+	SetTitle(_("GFK-Projekt"));
 	SetIcon(wxNullIcon);
 	SetSize(8, 8, 570, 360);
 	Center();
