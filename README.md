@@ -24,3 +24,11 @@ W tej wersji program potrafi sam dobrać długość strzałek tak, aby najdłuż
 + (Rozszerzenie) Alternatywny sposób wyświetlania strzałek - stała długość + kolor
 + (Rozszerzenie) Możliwość zapisu wyniku na dysku w postaci bit mapy
 + (Rozszerzenie) Odcięcie części pola za pomocą płaszczyzny
+
+
+### Projekt aplikacji:
+
+Moja wstępna propozycja na strukturę aplikacji. Wygenerowana została w wxFormBuilder-ze. Oczywiście możemy to wykonać zupełnie inaczej.
+
+![](Markdown_img/1.png)
+**Rysunek 1** - Struktura aplikacji
