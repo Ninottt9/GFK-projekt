@@ -21,9 +21,12 @@
 #include <wx/panel.h>
 #include <wx/sizer.h>
 #include <wx/frame.h>
+#include <wx/bmpbuttn.h>
+#include <wx/button.h>
 #include <wx/stattext.h>
 #include <wx/listbox.h>
 #include <wx/statline.h>
+#include <wx/tglbtn.h>
 #include <wx/slider.h>
 #include <wx/spinctrl.h>
 #include <wx/radiobut.h>
@@ -55,7 +58,7 @@ class MainFrame : public wxFrame
 
 	public:
 
-		MainFrame( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 631,501 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		MainFrame( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxPoint( -1,-1 ), const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 
 		~MainFrame();
 
@@ -69,20 +72,36 @@ class ControlDialog : public wxDialog
 	private:
 
 	protected:
+		wxBitmapButton* DisplayEquation;
 		wxStaticText* ChoiceText;
 		wxListBox* ChoiceList;
 		wxStaticLine* Separator;
 		wxStaticText* PlaneText;
+		wxToggleButton* PlaneEnable;
 		wxSlider* PlaneCtrl;
+		wxStaticText* XLabel;
 		wxStaticText* MinText;
 		wxSpinCtrlDouble* MinCtrl;
 		wxStaticText* MaxText;
 		wxSpinCtrlDouble* MaxCtrl;
+		wxStaticText* YLabel;
+		wxStaticText* MinText1;
+		wxSpinCtrlDouble* MinCtrl1;
+		wxStaticText* MaxText1;
+		wxSpinCtrlDouble* MaxCtrl1;
+		wxStaticText* ZLabel;
+		wxStaticText* MinText2;
+		wxSpinCtrlDouble* MinCtrl2;
+		wxStaticText* MaxText2;
+		wxSpinCtrlDouble* MaxCtrl2;
 		wxStaticText* PrecisionText;
 		wxSlider* PrecisionCtrl;
+		wxStaticLine* m_staticline2;
 		wxStaticText* PrintingText;
 		wxRadioButton* ColorRadio;
 		wxRadioButton* LengthRadio;
+		wxStaticText* ArrowText;
+		wxSlider* ArrowCtrl;
 
 		// Virtual event handlers, override them in your derived class
 		virtual void OnExit( wxCloseEvent& event ) { event.Skip(); }
@@ -90,7 +109,7 @@ class ControlDialog : public wxDialog
 
 	public:
 
-		ControlDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Control"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 485,333 ), long style = wxDEFAULT_DIALOG_STYLE|wxSTAY_ON_TOP );
+		ControlDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Control"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,600 ), long style = wxDEFAULT_DIALOG_STYLE|wxSTAY_ON_TOP );
 
 		~ControlDialog();
 

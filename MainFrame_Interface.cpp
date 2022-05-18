@@ -26,6 +26,7 @@ void MainFrame_Interface::m_ControlPanelSelection( wxCommandEvent& event )
 	if (Menu_File->IsChecked(Menu_File->FindItem("Control Panel"))) {
 		controldialog = new Dialog_Interface(this);
 		controldialog->Show();
+		this->SetFocus();
 	}
 	else {
 		if (controldialog) {
@@ -46,7 +47,7 @@ void MainFrame_Interface::m_QuitSelection( wxCommandEvent& event )
 
 void MainFrame_Interface::m_AboutSelection( wxCommandEvent& event )
 {
-// TODO: Implement m_AboutSelection
+	wxMessageDialog(this, "GFK - Projekt\nContributors:\n", "", wxOK).ShowModal();
 }
 
 void MainFrame_Interface::Refresh( wxUpdateUIEvent& event )

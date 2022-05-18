@@ -18,15 +18,24 @@
     <ClCompile Include="Source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Layout.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog_Interface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainFrame_Interface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="NieModalnyDlg.h">
+    <ClInclude Include="Dialog_Interface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MyFrame.h">
+    <ClInclude Include="Layout.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ModalnyDlg.h">
+    <ClInclude Include="MainFrame_Interface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

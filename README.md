@@ -16,9 +16,9 @@ W tej wersji program potrafi sam dobrać długość strzałek tak, aby najdłuż
 
 
 ### Plan:
-+ Funkcje pola wektorowego wybierane z listy (możliwość manipulacja parametrami funkcji).
++ Funkcje pola wektorowego wybierane z listy (możliwość manipulacji parametrami funkcji).
 + Wizualizacja pola poprzez rysowanie strzałek
-+ Możliwość określenia przedziału zmiennności oraz ilości odcinków po podziale ( chyba chodzi o skale osi ???)
++ Możliwość określenia przedziału zmiennności oraz ilości odcinków na ile dzielimy ten przedział
 + Możliwość zmianny długości strzałek za pomocą suwaka
 + (Rozszerzenie) Automatyczny dobór długości strzałek
 + (Rozszerzenie) Alternatywny sposób wyświetlania strzałek - stała długość + kolor
@@ -26,9 +26,22 @@ W tej wersji program potrafi sam dobrać długość strzałek tak, aby najdłuż
 + (Rozszerzenie) Odcięcie części pola za pomocą płaszczyzny
 
 
+### Inspiracje:
++ https://www.geogebra.org/m/u3xregNW
++ https://www.geogebra.org/m/KKB2Ndez
++ https://glennmarshall.wordpress.com/2014/10/31/3d-neon-vector-fields/
++ https://chart-studio.plotly.com/~empet/14971.embed
++ https://forum.dynamobim.com/t/vector-field-visualization/26862
+
+
 ### Projekt aplikacji:
 
 Moja wstępna propozycja na strukturę aplikacji. Wygenerowana została w wxFormBuilder-ze. Oczywiście możemy to wykonać zupełnie inaczej.
 
-![](Markdown_img/1.png)
+<img src="Markdown_img/1.png" width="100">
+
 **Rysunek 1** - Struktura aplikacji
+
+<img src="Markdown_img/2.png" width="400">
+
+**Rysunek 2** - Wygląd aplikacji

@@ -21,7 +21,7 @@ class Dialog_Interface : public ControlDialog
 		Dialog_Interface( wxWindow* parent );
 	//// end generated class members
 
-
+		wxBitmap eq1;
 };
 
 #endif // __Dialog_Interface__
