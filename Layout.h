@@ -31,6 +31,7 @@
 #include <wx/spinctrl.h>
 #include <wx/radiobut.h>
 #include <wx/dialog.h>
+#include <wx/statbox.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -50,15 +51,25 @@ class MainFrame : public wxFrame
 
 		// Virtual event handlers, override them in your derived class
 		virtual void OnExit( wxCloseEvent& event ) { event.Skip(); }
+		virtual void Refresh( wxUpdateUIEvent& event ) { event.Skip(); }
 		virtual void m_ControlPanelSelection( wxCommandEvent& event ) { event.Skip(); }
+		virtual void m_FunctionConfigSelection( wxCommandEvent& event ) { event.Skip(); }
+		virtual void m_SaveAsSelection( wxCommandEvent& event ) { event.Skip(); }
 		virtual void m_QuitSelection( wxCommandEvent& event ) { event.Skip(); }
 		virtual void m_AboutSelection( wxCommandEvent& event ) { event.Skip(); }
-		virtual void Refresh( wxUpdateUIEvent& event ) { event.Skip(); }
+		virtual void m_HelpSelection( wxCommandEvent& event ) { event.Skip(); }
+		virtual void DrawCanvasOnChar( wxKeyEvent& event ) { event.Skip(); }
+		virtual void DrawCanvasOnLeftDown( wxMouseEvent& event ) { event.Skip(); }
+		virtual void DrawCanvasOnLeftUp( wxMouseEvent& event ) { event.Skip(); }
+		virtual void DrawCanvasOnMotion( wxMouseEvent& event ) { event.Skip(); }
+		virtual void DrawCanvasOnMouseWheel( wxMouseEvent& event ) { event.Skip(); }
+		virtual void DrawCanvasOnRightDown( wxMouseEvent& event ) { event.Skip(); }
+		virtual void DrawCanvasOnRightUp( wxMouseEvent& event ) { event.Skip(); }
 
 
 	public:
 
-		MainFrame( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxPoint( -1,-1 ), const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		MainFrame( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxPoint( -1,-1 ), const wxSize& size = wxSize( 720,446 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 
 		~MainFrame();
 
@@ -104,7 +115,32 @@ class ControlDialog : public wxDialog
 		wxSlider* ArrowCtrl;
 
 		// Virtual event handlers, override them in your derived class
+		virtual void ControlDialogOnChar( wxKeyEvent& event ) { event.Skip(); }
 		virtual void OnExit( wxCloseEvent& event ) { event.Skip(); }
+		virtual void DisplayEquationOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
+		virtual void ChoiceTextOnMouseEvents( wxMouseEvent& event ) { event.Skip(); }
+		virtual void ChoiceListOnListBox( wxCommandEvent& event ) { event.Skip(); }
+		virtual void PlaneEnableOnToggleButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void PlaneCtrlOnScroll( wxScrollEvent& event ) { event.Skip(); }
+		virtual void PlaneCtrlOnSlider( wxCommandEvent& event ) { event.Skip(); }
+		virtual void X_MinCtrlOnSpinCtrlDouble( wxSpinDoubleEvent& event ) { event.Skip(); }
+		virtual void X_MinCtrlOnSpinCtrlText( wxCommandEvent& event ) { event.Skip(); }
+		virtual void X_MaxCtrlOnSpinCtrlDouble( wxSpinDoubleEvent& event ) { event.Skip(); }
+		virtual void X_MaxCtrlOnSpinCtrlText( wxCommandEvent& event ) { event.Skip(); }
+		virtual void Y_MinCtrlOnSpinCtrlDouble( wxSpinDoubleEvent& event ) { event.Skip(); }
+		virtual void Y_MinCtrl1OnSpinCtrlText( wxCommandEvent& event ) { event.Skip(); }
+		virtual void Y__MaxCtrlOnSpinCtrlDouble( wxSpinDoubleEvent& event ) { event.Skip(); }
+		virtual void Y_MaxCtrlOnSpinCtrlText( wxCommandEvent& event ) { event.Skip(); }
+		virtual void Z_MinCtrlOnSpinCtrlDouble( wxSpinDoubleEvent& event ) { event.Skip(); }
+		virtual void Z_MinCtrlOnSpinCtrlText( wxCommandEvent& event ) { event.Skip(); }
+		virtual void Z_MaxCtrlOnSpinCtrlDouble( wxSpinDoubleEvent& event ) { event.Skip(); }
+		virtual void Z_MaxCtrlOnSpinCtrlText( wxCommandEvent& event ) { event.Skip(); }
+		virtual void PrecisionCtrlOnScroll( wxScrollEvent& event ) { event.Skip(); }
+		virtual void PrecisionCtrlOnSlider( wxCommandEvent& event ) { event.Skip(); }
+		virtual void ColorRadioOnRadioButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void LengthRadioOnRadioButton( wxCommandEvent& event ) { event.Skip(); }
+		virtual void ArrowCtrlOnScroll( wxScrollEvent& event ) { event.Skip(); }
+		virtual void ArrowCtrlOnSlider( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:
@@ -112,6 +148,44 @@ class ControlDialog : public wxDialog
 		ControlDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Control"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,600 ), long style = wxDEFAULT_DIALOG_STYLE|wxSTAY_ON_TOP );
 
 		~ControlDialog();
+
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class ControlParam
+///////////////////////////////////////////////////////////////////////////////
+class ControlParam : public wxDialog
+{
+	private:
+
+	protected:
+		wxStaticText* DesciptionText;
+		wxStaticText* Param1Text;
+		wxSpinCtrlDouble* Param1Ctrl;
+
+	public:
+
+		ControlParam( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Parameters"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 396,261 ), long style = wxDEFAULT_DIALOG_STYLE );
+
+		~ControlParam();
+
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class HelpDialog
+///////////////////////////////////////////////////////////////////////////////
+class HelpDialog : public wxDialog
+{
+	private:
+
+	protected:
+		wxStaticText* HelpText;
+
+	public:
+
+		HelpDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE );
+
+		~HelpDialog();
 
 };
 

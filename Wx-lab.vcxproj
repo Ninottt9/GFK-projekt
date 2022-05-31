@@ -59,19 +59,19 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(WX_WIDGETS)\wxwidgets.props" Condition="exists('$(WX_WIDGETS)\wxwidgets.props')"/>
+    <Import Project="$(WX_WIDGETS)\wxwidgets.props" Condition="exists('$(WX_WIDGETS)\wxwidgets.props')" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(WX_WIDGETS)\wxwidgets.props" Condition="exists('$(WX_WIDGETS)\wxwidgets.props')"/>
+    <Import Project="$(WX_WIDGETS)\wxwidgets.props" Condition="exists('$(WX_WIDGETS)\wxwidgets.props')" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(WX_WIDGETS)\wxwidgets.props" Condition="exists('$(WX_WIDGETS)\wxwidgets.props')"/>
+    <Import Project="$(WX_WIDGETS)\wxwidgets.props" Condition="exists('$(WX_WIDGETS)\wxwidgets.props')" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(WX_WIDGETS)\wxwidgets.props" Condition="exists('$(WX_WIDGETS)\wxwidgets.props')"/>
+    <Import Project="$(WX_WIDGETS)\wxwidgets.props" Condition="exists('$(WX_WIDGETS)\wxwidgets.props')" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -121,7 +121,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
@@ -148,15 +148,35 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="arrow1.geo" />
+    <None Include="model1.geo" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="eq1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Config.h" />
+    <ClInclude Include="ControlParam_Interface.h" />
+    <ClInclude Include="Dialog_Interface.h" />
+    <ClInclude Include="Draw.h" />
+    <ClInclude Include="Function.h" />
+    <ClInclude Include="HelpDialog_Interface.h" />
+    <ClInclude Include="Layout.h" />
+    <ClInclude Include="MainFrame_Interface.h" />
+    <ClInclude Include="Primitives.h" />
+    <ClInclude Include="VectorMatrix.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Config.cpp" />
+    <ClCompile Include="ControlParam_Interface.cpp" />
     <ClCompile Include="Dialog_Interface.cpp" />
+    <ClCompile Include="Draw.cpp" />
+    <ClCompile Include="Function.cpp" />
+    <ClCompile Include="HelpDialog_Interface.cpp" />
     <ClCompile Include="Layout.cpp" />
     <ClCompile Include="MainFrame_Interface.cpp" />
     <ClCompile Include="Source.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Dialog_Interface.h" />
-    <ClInclude Include="Layout.h" />
-    <ClInclude Include="MainFrame_Interface.h" />
+    <ClCompile Include="VectorMatrix.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

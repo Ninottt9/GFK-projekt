@@ -19,23 +19,27 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	File_ControlPanel = new wxMenuItem( Menu_File, wxID_ANY, wxString( wxT("Control Panel") ) + wxT('\t') + wxT("F1"), wxT("Turn on dialog to control input data for a vector space."), wxITEM_CHECK );
 	Menu_File->Append( File_ControlPanel );
 
+	wxMenuItem* File_FunctionConfig;
+	File_FunctionConfig = new wxMenuItem( Menu_File, wxID_ANY, wxString( wxT("Function Parameters") ) + wxT('\t') + wxT("F2"), wxT("Turn on the dialog to control function parameters."), wxITEM_CHECK );
+	Menu_File->Append( File_FunctionConfig );
+
 	wxMenuItem* File_SaveAs;
-	File_SaveAs = new wxMenuItem( Menu_File, wxID_ANY, wxString( wxT("Save As") ) + wxT('\t') + wxT("F4"), wxEmptyString, wxITEM_NORMAL );
+	File_SaveAs = new wxMenuItem( Menu_File, wxID_ANY, wxString( wxT("Save As") ) + wxT('\t') + wxT("F3"), wxT("Save screenshot of vector field."), wxITEM_NORMAL );
 	Menu_File->Append( File_SaveAs );
 
 	wxMenuItem* File_Quit;
-	File_Quit = new wxMenuItem( Menu_File, wxID_ANY, wxString( wxT("Quit") ) + wxT('\t') + wxT("F2"), wxT("Quit app"), wxITEM_NORMAL );
+	File_Quit = new wxMenuItem( Menu_File, wxID_ANY, wxString( wxT("Quit") ) + wxT('\t') + wxT("F4"), wxT("Quit app"), wxITEM_NORMAL );
 	Menu_File->Append( File_Quit );
 
 	MainMenuBar->Append( Menu_File, wxT("File") );
 
 	Menu_About = new wxMenu();
 	wxMenuItem* About_Info;
-	About_Info = new wxMenuItem( Menu_About, wxID_ANY, wxString( wxT("About") ) + wxT('\t') + wxT("F3"), wxEmptyString, wxITEM_NORMAL );
+	About_Info = new wxMenuItem( Menu_About, wxID_ANY, wxString( wxT("About") ) + wxT('\t') + wxT("F5"), wxT("Information about the app."), wxITEM_NORMAL );
 	Menu_About->Append( About_Info );
 
 	wxMenuItem* About_Help;
-	About_Help = new wxMenuItem( Menu_About, wxID_ANY, wxString( wxT("Help") ) + wxT('\t') + wxT("F5"), wxEmptyString, wxITEM_NORMAL );
+	About_Help = new wxMenuItem( Menu_About, wxID_ANY, wxString( wxT("Help") ) + wxT('\t') + wxT("F6"), wxT("Information about who to control the app."), wxITEM_CHECK );
 	Menu_About->Append( About_Help );
 
 	MainMenuBar->Append( Menu_About, wxT("About") );
@@ -54,15 +58,25 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 
 	this->SetSizer( MainSizer );
 	this->Layout();
-	MainSizer->Fit( this );
 
 	this->Centre( wxBOTH );
 
 	// Connect Events
 	this->Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( MainFrame::OnExit ) );
+	this->Connect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MainFrame::Refresh ) );
 	Menu_File->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrame::m_ControlPanelSelection ), this, File_ControlPanel->GetId());
+	Menu_File->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrame::m_FunctionConfigSelection ), this, File_FunctionConfig->GetId());
+	Menu_File->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrame::m_SaveAsSelection ), this, File_SaveAs->GetId());
 	Menu_File->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrame::m_QuitSelection ), this, File_Quit->GetId());
 	Menu_About->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrame::m_AboutSelection ), this, About_Info->GetId());
+	Menu_About->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrame::m_HelpSelection ), this, About_Help->GetId());
+	DrawCanvas->Connect( wxEVT_CHAR, wxKeyEventHandler( MainFrame::DrawCanvasOnChar ), NULL, this );
+	DrawCanvas->Connect( wxEVT_LEFT_DOWN, wxMouseEventHandler( MainFrame::DrawCanvasOnLeftDown ), NULL, this );
+	DrawCanvas->Connect( wxEVT_LEFT_UP, wxMouseEventHandler( MainFrame::DrawCanvasOnLeftUp ), NULL, this );
+	DrawCanvas->Connect( wxEVT_MOTION, wxMouseEventHandler( MainFrame::DrawCanvasOnMotion ), NULL, this );
+	DrawCanvas->Connect( wxEVT_MOUSEWHEEL, wxMouseEventHandler( MainFrame::DrawCanvasOnMouseWheel ), NULL, this );
+	DrawCanvas->Connect( wxEVT_RIGHT_DOWN, wxMouseEventHandler( MainFrame::DrawCanvasOnRightDown ), NULL, this );
+	DrawCanvas->Connect( wxEVT_RIGHT_UP, wxMouseEventHandler( MainFrame::DrawCanvasOnRightUp ), NULL, this );
 	DrawCanvas->Connect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MainFrame::Refresh ), NULL, this );
 }
 
@@ -70,6 +84,14 @@ MainFrame::~MainFrame()
 {
 	// Disconnect Events
 	this->Disconnect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( MainFrame::OnExit ) );
+	this->Disconnect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MainFrame::Refresh ) );
+	DrawCanvas->Disconnect( wxEVT_CHAR, wxKeyEventHandler( MainFrame::DrawCanvasOnChar ), NULL, this );
+	DrawCanvas->Disconnect( wxEVT_LEFT_DOWN, wxMouseEventHandler( MainFrame::DrawCanvasOnLeftDown ), NULL, this );
+	DrawCanvas->Disconnect( wxEVT_LEFT_UP, wxMouseEventHandler( MainFrame::DrawCanvasOnLeftUp ), NULL, this );
+	DrawCanvas->Disconnect( wxEVT_MOTION, wxMouseEventHandler( MainFrame::DrawCanvasOnMotion ), NULL, this );
+	DrawCanvas->Disconnect( wxEVT_MOUSEWHEEL, wxMouseEventHandler( MainFrame::DrawCanvasOnMouseWheel ), NULL, this );
+	DrawCanvas->Disconnect( wxEVT_RIGHT_DOWN, wxMouseEventHandler( MainFrame::DrawCanvasOnRightDown ), NULL, this );
+	DrawCanvas->Disconnect( wxEVT_RIGHT_UP, wxMouseEventHandler( MainFrame::DrawCanvasOnRightUp ), NULL, this );
 	DrawCanvas->Disconnect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MainFrame::Refresh ), NULL, this );
 
 }
@@ -133,7 +155,7 @@ ControlDialog::ControlDialog( wxWindow* parent, wxWindowID id, const wxString& t
 	MinText->Wrap( -1 );
 	X_MinMaxSizer->Add( MinText, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
-	MinCtrl = new wxSpinCtrlDouble( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 10000, 0, 1 );
+	MinCtrl = new wxSpinCtrlDouble( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, -1000, 10000, 0, 1 );
 	MinCtrl->SetDigits( 0 );
 	X_MinMaxSizer->Add( MinCtrl, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -144,7 +166,7 @@ ControlDialog::ControlDialog( wxWindow* parent, wxWindowID id, const wxString& t
 	MaxText->Wrap( -1 );
 	X_MinMaxSizer->Add( MaxText, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
-	MaxCtrl = new wxSpinCtrlDouble( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 10000, 0, 1 );
+	MaxCtrl = new wxSpinCtrlDouble( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, -1000, 10000, 0, 1 );
 	MaxCtrl->SetDigits( 0 );
 	X_MinMaxSizer->Add( MaxCtrl, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -165,7 +187,7 @@ ControlDialog::ControlDialog( wxWindow* parent, wxWindowID id, const wxString& t
 	MinText1->Wrap( -1 );
 	Y_MinMaxSizer->Add( MinText1, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
-	MinCtrl1 = new wxSpinCtrlDouble( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 10000, 0, 1 );
+	MinCtrl1 = new wxSpinCtrlDouble( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, -1000, 10000, 0, 1 );
 	MinCtrl1->SetDigits( 0 );
 	Y_MinMaxSizer->Add( MinCtrl1, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -176,7 +198,7 @@ ControlDialog::ControlDialog( wxWindow* parent, wxWindowID id, const wxString& t
 	MaxText1->Wrap( -1 );
 	Y_MinMaxSizer->Add( MaxText1, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
-	MaxCtrl1 = new wxSpinCtrlDouble( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 10000, 0, 1 );
+	MaxCtrl1 = new wxSpinCtrlDouble( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, -1000, 10000, 0, 1 );
 	MaxCtrl1->SetDigits( 0 );
 	Y_MinMaxSizer->Add( MaxCtrl1, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -197,7 +219,7 @@ ControlDialog::ControlDialog( wxWindow* parent, wxWindowID id, const wxString& t
 	MinText2->Wrap( -1 );
 	Z_MinMaxSizer->Add( MinText2, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
-	MinCtrl2 = new wxSpinCtrlDouble( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 10000, 0, 1 );
+	MinCtrl2 = new wxSpinCtrlDouble( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, -1000, 10000, 0, 1 );
 	MinCtrl2->SetDigits( 0 );
 	Z_MinMaxSizer->Add( MinCtrl2, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -208,7 +230,7 @@ ControlDialog::ControlDialog( wxWindow* parent, wxWindowID id, const wxString& t
 	MaxText2->Wrap( -1 );
 	Z_MinMaxSizer->Add( MaxText2, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
-	MaxCtrl2 = new wxSpinCtrlDouble( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 10000, 0, 1 );
+	MaxCtrl2 = new wxSpinCtrlDouble( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, -1000, 10000, 0, 1 );
 	MaxCtrl2->SetDigits( 0 );
 	Z_MinMaxSizer->Add( MaxCtrl2, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -277,12 +299,220 @@ ControlDialog::ControlDialog( wxWindow* parent, wxWindowID id, const wxString& t
 	this->Centre( wxBOTH );
 
 	// Connect Events
+	this->Connect( wxEVT_CHAR, wxKeyEventHandler( ControlDialog::ControlDialogOnChar ) );
 	this->Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( ControlDialog::OnExit ) );
+	DisplayEquation->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ControlDialog::DisplayEquationOnButtonClick ), NULL, this );
+	ChoiceText->Connect( wxEVT_LEFT_DOWN, wxMouseEventHandler( ControlDialog::ChoiceTextOnMouseEvents ), NULL, this );
+	ChoiceText->Connect( wxEVT_LEFT_UP, wxMouseEventHandler( ControlDialog::ChoiceTextOnMouseEvents ), NULL, this );
+	ChoiceText->Connect( wxEVT_MIDDLE_DOWN, wxMouseEventHandler( ControlDialog::ChoiceTextOnMouseEvents ), NULL, this );
+	ChoiceText->Connect( wxEVT_MIDDLE_UP, wxMouseEventHandler( ControlDialog::ChoiceTextOnMouseEvents ), NULL, this );
+	ChoiceText->Connect( wxEVT_RIGHT_DOWN, wxMouseEventHandler( ControlDialog::ChoiceTextOnMouseEvents ), NULL, this );
+	ChoiceText->Connect( wxEVT_RIGHT_UP, wxMouseEventHandler( ControlDialog::ChoiceTextOnMouseEvents ), NULL, this );
+	ChoiceText->Connect( wxEVT_AUX1_DOWN, wxMouseEventHandler( ControlDialog::ChoiceTextOnMouseEvents ), NULL, this );
+	ChoiceText->Connect( wxEVT_AUX1_UP, wxMouseEventHandler( ControlDialog::ChoiceTextOnMouseEvents ), NULL, this );
+	ChoiceText->Connect( wxEVT_AUX2_DOWN, wxMouseEventHandler( ControlDialog::ChoiceTextOnMouseEvents ), NULL, this );
+	ChoiceText->Connect( wxEVT_AUX1_UP, wxMouseEventHandler( ControlDialog::ChoiceTextOnMouseEvents ), NULL, this );
+	ChoiceText->Connect( wxEVT_MOTION, wxMouseEventHandler( ControlDialog::ChoiceTextOnMouseEvents ), NULL, this );
+	ChoiceText->Connect( wxEVT_LEFT_DCLICK, wxMouseEventHandler( ControlDialog::ChoiceTextOnMouseEvents ), NULL, this );
+	ChoiceText->Connect( wxEVT_MIDDLE_DCLICK, wxMouseEventHandler( ControlDialog::ChoiceTextOnMouseEvents ), NULL, this );
+	ChoiceText->Connect( wxEVT_RIGHT_DCLICK, wxMouseEventHandler( ControlDialog::ChoiceTextOnMouseEvents ), NULL, this );
+	ChoiceText->Connect( wxEVT_AUX1_DCLICK, wxMouseEventHandler( ControlDialog::ChoiceTextOnMouseEvents ), NULL, this );
+	ChoiceText->Connect( wxEVT_AUX2_DCLICK, wxMouseEventHandler( ControlDialog::ChoiceTextOnMouseEvents ), NULL, this );
+	ChoiceText->Connect( wxEVT_LEAVE_WINDOW, wxMouseEventHandler( ControlDialog::ChoiceTextOnMouseEvents ), NULL, this );
+	ChoiceText->Connect( wxEVT_ENTER_WINDOW, wxMouseEventHandler( ControlDialog::ChoiceTextOnMouseEvents ), NULL, this );
+	ChoiceText->Connect( wxEVT_MOUSEWHEEL, wxMouseEventHandler( ControlDialog::ChoiceTextOnMouseEvents ), NULL, this );
+	ChoiceList->Connect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( ControlDialog::ChoiceListOnListBox ), NULL, this );
+	PlaneEnable->Connect( wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, wxCommandEventHandler( ControlDialog::PlaneEnableOnToggleButton ), NULL, this );
+	PlaneCtrl->Connect( wxEVT_SCROLL_TOP, wxScrollEventHandler( ControlDialog::PlaneCtrlOnScroll ), NULL, this );
+	PlaneCtrl->Connect( wxEVT_SCROLL_BOTTOM, wxScrollEventHandler( ControlDialog::PlaneCtrlOnScroll ), NULL, this );
+	PlaneCtrl->Connect( wxEVT_SCROLL_LINEUP, wxScrollEventHandler( ControlDialog::PlaneCtrlOnScroll ), NULL, this );
+	PlaneCtrl->Connect( wxEVT_SCROLL_LINEDOWN, wxScrollEventHandler( ControlDialog::PlaneCtrlOnScroll ), NULL, this );
+	PlaneCtrl->Connect( wxEVT_SCROLL_PAGEUP, wxScrollEventHandler( ControlDialog::PlaneCtrlOnScroll ), NULL, this );
+	PlaneCtrl->Connect( wxEVT_SCROLL_PAGEDOWN, wxScrollEventHandler( ControlDialog::PlaneCtrlOnScroll ), NULL, this );
+	PlaneCtrl->Connect( wxEVT_SCROLL_THUMBTRACK, wxScrollEventHandler( ControlDialog::PlaneCtrlOnScroll ), NULL, this );
+	PlaneCtrl->Connect( wxEVT_SCROLL_THUMBRELEASE, wxScrollEventHandler( ControlDialog::PlaneCtrlOnScroll ), NULL, this );
+	PlaneCtrl->Connect( wxEVT_SCROLL_CHANGED, wxScrollEventHandler( ControlDialog::PlaneCtrlOnScroll ), NULL, this );
+	PlaneCtrl->Connect( wxEVT_SLIDER, wxCommandEventHandler( ControlDialog::PlaneCtrlOnSlider ), NULL, this );
+	MinCtrl->Connect( wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED, wxSpinDoubleEventHandler( ControlDialog::X_MinCtrlOnSpinCtrlDouble ), NULL, this );
+	MinCtrl->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( ControlDialog::X_MinCtrlOnSpinCtrlText ), NULL, this );
+	MaxCtrl->Connect( wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED, wxSpinDoubleEventHandler( ControlDialog::X_MaxCtrlOnSpinCtrlDouble ), NULL, this );
+	MaxCtrl->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( ControlDialog::X_MaxCtrlOnSpinCtrlText ), NULL, this );
+	MinCtrl1->Connect( wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED, wxSpinDoubleEventHandler( ControlDialog::Y_MinCtrlOnSpinCtrlDouble ), NULL, this );
+	MinCtrl1->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( ControlDialog::Y_MinCtrl1OnSpinCtrlText ), NULL, this );
+	MaxCtrl1->Connect( wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED, wxSpinDoubleEventHandler( ControlDialog::Y__MaxCtrlOnSpinCtrlDouble ), NULL, this );
+	MaxCtrl1->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( ControlDialog::Y_MaxCtrlOnSpinCtrlText ), NULL, this );
+	MinCtrl2->Connect( wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED, wxSpinDoubleEventHandler( ControlDialog::Z_MinCtrlOnSpinCtrlDouble ), NULL, this );
+	MinCtrl2->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( ControlDialog::Z_MinCtrlOnSpinCtrlText ), NULL, this );
+	MaxCtrl2->Connect( wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED, wxSpinDoubleEventHandler( ControlDialog::Z_MaxCtrlOnSpinCtrlDouble ), NULL, this );
+	MaxCtrl2->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( ControlDialog::Z_MaxCtrlOnSpinCtrlText ), NULL, this );
+	PrecisionCtrl->Connect( wxEVT_SCROLL_TOP, wxScrollEventHandler( ControlDialog::PrecisionCtrlOnScroll ), NULL, this );
+	PrecisionCtrl->Connect( wxEVT_SCROLL_BOTTOM, wxScrollEventHandler( ControlDialog::PrecisionCtrlOnScroll ), NULL, this );
+	PrecisionCtrl->Connect( wxEVT_SCROLL_LINEUP, wxScrollEventHandler( ControlDialog::PrecisionCtrlOnScroll ), NULL, this );
+	PrecisionCtrl->Connect( wxEVT_SCROLL_LINEDOWN, wxScrollEventHandler( ControlDialog::PrecisionCtrlOnScroll ), NULL, this );
+	PrecisionCtrl->Connect( wxEVT_SCROLL_PAGEUP, wxScrollEventHandler( ControlDialog::PrecisionCtrlOnScroll ), NULL, this );
+	PrecisionCtrl->Connect( wxEVT_SCROLL_PAGEDOWN, wxScrollEventHandler( ControlDialog::PrecisionCtrlOnScroll ), NULL, this );
+	PrecisionCtrl->Connect( wxEVT_SCROLL_THUMBTRACK, wxScrollEventHandler( ControlDialog::PrecisionCtrlOnScroll ), NULL, this );
+	PrecisionCtrl->Connect( wxEVT_SCROLL_THUMBRELEASE, wxScrollEventHandler( ControlDialog::PrecisionCtrlOnScroll ), NULL, this );
+	PrecisionCtrl->Connect( wxEVT_SCROLL_CHANGED, wxScrollEventHandler( ControlDialog::PrecisionCtrlOnScroll ), NULL, this );
+	PrecisionCtrl->Connect( wxEVT_SLIDER, wxCommandEventHandler( ControlDialog::PrecisionCtrlOnSlider ), NULL, this );
+	ColorRadio->Connect( wxEVT_COMMAND_RADIOBUTTON_SELECTED, wxCommandEventHandler( ControlDialog::ColorRadioOnRadioButton ), NULL, this );
+	LengthRadio->Connect( wxEVT_COMMAND_RADIOBUTTON_SELECTED, wxCommandEventHandler( ControlDialog::LengthRadioOnRadioButton ), NULL, this );
+	ArrowCtrl->Connect( wxEVT_SCROLL_TOP, wxScrollEventHandler( ControlDialog::ArrowCtrlOnScroll ), NULL, this );
+	ArrowCtrl->Connect( wxEVT_SCROLL_BOTTOM, wxScrollEventHandler( ControlDialog::ArrowCtrlOnScroll ), NULL, this );
+	ArrowCtrl->Connect( wxEVT_SCROLL_LINEUP, wxScrollEventHandler( ControlDialog::ArrowCtrlOnScroll ), NULL, this );
+	ArrowCtrl->Connect( wxEVT_SCROLL_LINEDOWN, wxScrollEventHandler( ControlDialog::ArrowCtrlOnScroll ), NULL, this );
+	ArrowCtrl->Connect( wxEVT_SCROLL_PAGEUP, wxScrollEventHandler( ControlDialog::ArrowCtrlOnScroll ), NULL, this );
+	ArrowCtrl->Connect( wxEVT_SCROLL_PAGEDOWN, wxScrollEventHandler( ControlDialog::ArrowCtrlOnScroll ), NULL, this );
+	ArrowCtrl->Connect( wxEVT_SCROLL_THUMBTRACK, wxScrollEventHandler( ControlDialog::ArrowCtrlOnScroll ), NULL, this );
+	ArrowCtrl->Connect( wxEVT_SCROLL_THUMBRELEASE, wxScrollEventHandler( ControlDialog::ArrowCtrlOnScroll ), NULL, this );
+	ArrowCtrl->Connect( wxEVT_SCROLL_CHANGED, wxScrollEventHandler( ControlDialog::ArrowCtrlOnScroll ), NULL, this );
+	ArrowCtrl->Connect( wxEVT_SLIDER, wxCommandEventHandler( ControlDialog::ArrowCtrlOnSlider ), NULL, this );
 }
 
 ControlDialog::~ControlDialog()
 {
 	// Disconnect Events
+	this->Disconnect( wxEVT_CHAR, wxKeyEventHandler( ControlDialog::ControlDialogOnChar ) );
 	this->Disconnect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( ControlDialog::OnExit ) );
+	DisplayEquation->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ControlDialog::DisplayEquationOnButtonClick ), NULL, this );
+	ChoiceText->Disconnect( wxEVT_LEFT_DOWN, wxMouseEventHandler( ControlDialog::ChoiceTextOnMouseEvents ), NULL, this );
+	ChoiceText->Disconnect( wxEVT_LEFT_UP, wxMouseEventHandler( ControlDialog::ChoiceTextOnMouseEvents ), NULL, this );
+	ChoiceText->Disconnect( wxEVT_MIDDLE_DOWN, wxMouseEventHandler( ControlDialog::ChoiceTextOnMouseEvents ), NULL, this );
+	ChoiceText->Disconnect( wxEVT_MIDDLE_UP, wxMouseEventHandler( ControlDialog::ChoiceTextOnMouseEvents ), NULL, this );
+	ChoiceText->Disconnect( wxEVT_RIGHT_DOWN, wxMouseEventHandler( ControlDialog::ChoiceTextOnMouseEvents ), NULL, this );
+	ChoiceText->Disconnect( wxEVT_RIGHT_UP, wxMouseEventHandler( ControlDialog::ChoiceTextOnMouseEvents ), NULL, this );
+	ChoiceText->Disconnect( wxEVT_AUX1_DOWN, wxMouseEventHandler( ControlDialog::ChoiceTextOnMouseEvents ), NULL, this );
+	ChoiceText->Disconnect( wxEVT_AUX1_UP, wxMouseEventHandler( ControlDialog::ChoiceTextOnMouseEvents ), NULL, this );
+	ChoiceText->Disconnect( wxEVT_AUX2_DOWN, wxMouseEventHandler( ControlDialog::ChoiceTextOnMouseEvents ), NULL, this );
+	ChoiceText->Disconnect( wxEVT_AUX1_UP, wxMouseEventHandler( ControlDialog::ChoiceTextOnMouseEvents ), NULL, this );
+	ChoiceText->Disconnect( wxEVT_MOTION, wxMouseEventHandler( ControlDialog::ChoiceTextOnMouseEvents ), NULL, this );
+	ChoiceText->Disconnect( wxEVT_LEFT_DCLICK, wxMouseEventHandler( ControlDialog::ChoiceTextOnMouseEvents ), NULL, this );
+	ChoiceText->Disconnect( wxEVT_MIDDLE_DCLICK, wxMouseEventHandler( ControlDialog::ChoiceTextOnMouseEvents ), NULL, this );
+	ChoiceText->Disconnect( wxEVT_RIGHT_DCLICK, wxMouseEventHandler( ControlDialog::ChoiceTextOnMouseEvents ), NULL, this );
+	ChoiceText->Disconnect( wxEVT_AUX1_DCLICK, wxMouseEventHandler( ControlDialog::ChoiceTextOnMouseEvents ), NULL, this );
+	ChoiceText->Disconnect( wxEVT_AUX2_DCLICK, wxMouseEventHandler( ControlDialog::ChoiceTextOnMouseEvents ), NULL, this );
+	ChoiceText->Disconnect( wxEVT_LEAVE_WINDOW, wxMouseEventHandler( ControlDialog::ChoiceTextOnMouseEvents ), NULL, this );
+	ChoiceText->Disconnect( wxEVT_ENTER_WINDOW, wxMouseEventHandler( ControlDialog::ChoiceTextOnMouseEvents ), NULL, this );
+	ChoiceText->Disconnect( wxEVT_MOUSEWHEEL, wxMouseEventHandler( ControlDialog::ChoiceTextOnMouseEvents ), NULL, this );
+	ChoiceList->Disconnect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( ControlDialog::ChoiceListOnListBox ), NULL, this );
+	PlaneEnable->Disconnect( wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, wxCommandEventHandler( ControlDialog::PlaneEnableOnToggleButton ), NULL, this );
+	PlaneCtrl->Disconnect( wxEVT_SCROLL_TOP, wxScrollEventHandler( ControlDialog::PlaneCtrlOnScroll ), NULL, this );
+	PlaneCtrl->Disconnect( wxEVT_SCROLL_BOTTOM, wxScrollEventHandler( ControlDialog::PlaneCtrlOnScroll ), NULL, this );
+	PlaneCtrl->Disconnect( wxEVT_SCROLL_LINEUP, wxScrollEventHandler( ControlDialog::PlaneCtrlOnScroll ), NULL, this );
+	PlaneCtrl->Disconnect( wxEVT_SCROLL_LINEDOWN, wxScrollEventHandler( ControlDialog::PlaneCtrlOnScroll ), NULL, this );
+	PlaneCtrl->Disconnect( wxEVT_SCROLL_PAGEUP, wxScrollEventHandler( ControlDialog::PlaneCtrlOnScroll ), NULL, this );
+	PlaneCtrl->Disconnect( wxEVT_SCROLL_PAGEDOWN, wxScrollEventHandler( ControlDialog::PlaneCtrlOnScroll ), NULL, this );
+	PlaneCtrl->Disconnect( wxEVT_SCROLL_THUMBTRACK, wxScrollEventHandler( ControlDialog::PlaneCtrlOnScroll ), NULL, this );
+	PlaneCtrl->Disconnect( wxEVT_SCROLL_THUMBRELEASE, wxScrollEventHandler( ControlDialog::PlaneCtrlOnScroll ), NULL, this );
+	PlaneCtrl->Disconnect( wxEVT_SCROLL_CHANGED, wxScrollEventHandler( ControlDialog::PlaneCtrlOnScroll ), NULL, this );
+	PlaneCtrl->Disconnect( wxEVT_SLIDER, wxCommandEventHandler( ControlDialog::PlaneCtrlOnSlider ), NULL, this );
+	MinCtrl->Disconnect( wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED, wxSpinDoubleEventHandler( ControlDialog::X_MinCtrlOnSpinCtrlDouble ), NULL, this );
+	MinCtrl->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( ControlDialog::X_MinCtrlOnSpinCtrlText ), NULL, this );
+	MaxCtrl->Disconnect( wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED, wxSpinDoubleEventHandler( ControlDialog::X_MaxCtrlOnSpinCtrlDouble ), NULL, this );
+	MaxCtrl->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( ControlDialog::X_MaxCtrlOnSpinCtrlText ), NULL, this );
+	MinCtrl1->Disconnect( wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED, wxSpinDoubleEventHandler( ControlDialog::Y_MinCtrlOnSpinCtrlDouble ), NULL, this );
+	MinCtrl1->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( ControlDialog::Y_MinCtrl1OnSpinCtrlText ), NULL, this );
+	MaxCtrl1->Disconnect( wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED, wxSpinDoubleEventHandler( ControlDialog::Y__MaxCtrlOnSpinCtrlDouble ), NULL, this );
+	MaxCtrl1->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( ControlDialog::Y_MaxCtrlOnSpinCtrlText ), NULL, this );
+	MinCtrl2->Disconnect( wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED, wxSpinDoubleEventHandler( ControlDialog::Z_MinCtrlOnSpinCtrlDouble ), NULL, this );
+	MinCtrl2->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( ControlDialog::Z_MinCtrlOnSpinCtrlText ), NULL, this );
+	MaxCtrl2->Disconnect( wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED, wxSpinDoubleEventHandler( ControlDialog::Z_MaxCtrlOnSpinCtrlDouble ), NULL, this );
+	MaxCtrl2->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( ControlDialog::Z_MaxCtrlOnSpinCtrlText ), NULL, this );
+	PrecisionCtrl->Disconnect( wxEVT_SCROLL_TOP, wxScrollEventHandler( ControlDialog::PrecisionCtrlOnScroll ), NULL, this );
+	PrecisionCtrl->Disconnect( wxEVT_SCROLL_BOTTOM, wxScrollEventHandler( ControlDialog::PrecisionCtrlOnScroll ), NULL, this );
+	PrecisionCtrl->Disconnect( wxEVT_SCROLL_LINEUP, wxScrollEventHandler( ControlDialog::PrecisionCtrlOnScroll ), NULL, this );
+	PrecisionCtrl->Disconnect( wxEVT_SCROLL_LINEDOWN, wxScrollEventHandler( ControlDialog::PrecisionCtrlOnScroll ), NULL, this );
+	PrecisionCtrl->Disconnect( wxEVT_SCROLL_PAGEUP, wxScrollEventHandler( ControlDialog::PrecisionCtrlOnScroll ), NULL, this );
+	PrecisionCtrl->Disconnect( wxEVT_SCROLL_PAGEDOWN, wxScrollEventHandler( ControlDialog::PrecisionCtrlOnScroll ), NULL, this );
+	PrecisionCtrl->Disconnect( wxEVT_SCROLL_THUMBTRACK, wxScrollEventHandler( ControlDialog::PrecisionCtrlOnScroll ), NULL, this );
+	PrecisionCtrl->Disconnect( wxEVT_SCROLL_THUMBRELEASE, wxScrollEventHandler( ControlDialog::PrecisionCtrlOnScroll ), NULL, this );
+	PrecisionCtrl->Disconnect( wxEVT_SCROLL_CHANGED, wxScrollEventHandler( ControlDialog::PrecisionCtrlOnScroll ), NULL, this );
+	PrecisionCtrl->Disconnect( wxEVT_SLIDER, wxCommandEventHandler( ControlDialog::PrecisionCtrlOnSlider ), NULL, this );
+	ColorRadio->Disconnect( wxEVT_COMMAND_RADIOBUTTON_SELECTED, wxCommandEventHandler( ControlDialog::ColorRadioOnRadioButton ), NULL, this );
+	LengthRadio->Disconnect( wxEVT_COMMAND_RADIOBUTTON_SELECTED, wxCommandEventHandler( ControlDialog::LengthRadioOnRadioButton ), NULL, this );
+	ArrowCtrl->Disconnect( wxEVT_SCROLL_TOP, wxScrollEventHandler( ControlDialog::ArrowCtrlOnScroll ), NULL, this );
+	ArrowCtrl->Disconnect( wxEVT_SCROLL_BOTTOM, wxScrollEventHandler( ControlDialog::ArrowCtrlOnScroll ), NULL, this );
+	ArrowCtrl->Disconnect( wxEVT_SCROLL_LINEUP, wxScrollEventHandler( ControlDialog::ArrowCtrlOnScroll ), NULL, this );
+	ArrowCtrl->Disconnect( wxEVT_SCROLL_LINEDOWN, wxScrollEventHandler( ControlDialog::ArrowCtrlOnScroll ), NULL, this );
+	ArrowCtrl->Disconnect( wxEVT_SCROLL_PAGEUP, wxScrollEventHandler( ControlDialog::ArrowCtrlOnScroll ), NULL, this );
+	ArrowCtrl->Disconnect( wxEVT_SCROLL_PAGEDOWN, wxScrollEventHandler( ControlDialog::ArrowCtrlOnScroll ), NULL, this );
+	ArrowCtrl->Disconnect( wxEVT_SCROLL_THUMBTRACK, wxScrollEventHandler( ControlDialog::ArrowCtrlOnScroll ), NULL, this );
+	ArrowCtrl->Disconnect( wxEVT_SCROLL_THUMBRELEASE, wxScrollEventHandler( ControlDialog::ArrowCtrlOnScroll ), NULL, this );
+	ArrowCtrl->Disconnect( wxEVT_SCROLL_CHANGED, wxScrollEventHandler( ControlDialog::ArrowCtrlOnScroll ), NULL, this );
+	ArrowCtrl->Disconnect( wxEVT_SLIDER, wxCommandEventHandler( ControlDialog::ArrowCtrlOnSlider ), NULL, this );
 
+}
+
+ControlParam::ControlParam( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+
+	wxBoxSizer* ParamSizer;
+	ParamSizer = new wxBoxSizer( wxVERTICAL );
+
+
+	ParamSizer->Add( 0, 10, 0, wxEXPAND, 5 );
+
+	DesciptionText = new wxStaticText( this, wxID_ANY, wxT("Parametry:"), wxPoint( -1,-1 ), wxDefaultSize, 0 );
+	DesciptionText->Wrap( -1 );
+	ParamSizer->Add( DesciptionText, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+
+
+	ParamSizer->Add( 0, 20, 0, wxEXPAND, 5 );
+
+	wxBoxSizer* ControlSizer;
+	ControlSizer = new wxBoxSizer( wxVERTICAL );
+
+	wxBoxSizer* Param1Sizer;
+	Param1Sizer = new wxBoxSizer( wxHORIZONTAL );
+
+	Param1Text = new wxStaticText( this, wxID_ANY, wxT("Param1: "), wxDefaultPosition, wxDefaultSize, 0 );
+	Param1Text->Wrap( -1 );
+	Param1Sizer->Add( Param1Text, 0, wxALL, 5 );
+
+
+	Param1Sizer->Add( 100, 0, 0, wxEXPAND, 5 );
+
+	Param1Ctrl = new wxSpinCtrlDouble( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, -100, 100, 0, 1 );
+	Param1Ctrl->SetDigits( 0 );
+	Param1Sizer->Add( Param1Ctrl, 0, wxALL, 5 );
+
+
+	ControlSizer->Add( Param1Sizer, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
+
+
+	ParamSizer->Add( ControlSizer, 1, wxEXPAND, 5 );
+
+
+	this->SetSizer( ParamSizer );
+	this->Layout();
+
+	this->Centre( wxBOTH );
+}
+
+ControlParam::~ControlParam()
+{
+}
+
+HelpDialog::HelpDialog( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+
+	wxStaticBoxSizer* HelpSizer;
+	HelpSizer = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, wxT("Help") ), wxVERTICAL );
+
+	HelpText = new wxStaticText( HelpSizer->GetStaticBox(), wxID_ANY, wxT("A :                      Obróć\nB :                       Przybliż\nC :                       Zwiększ ilość strzałek"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
+	HelpText->Wrap( -1 );
+	HelpSizer->Add( HelpText, 0, wxALL, 5 );
+
+
+	this->SetSizer( HelpSizer );
+	this->Layout();
+	HelpSizer->Fit( this );
+
+	this->Centre( wxBOTH );
+}
+
+HelpDialog::~HelpDialog()
+{
 }
