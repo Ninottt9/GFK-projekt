@@ -14,7 +14,7 @@ public:
 	double GetBufferZ() const;
 	unsigned int GetCuts() const;
 	double GetCutLen() const;
-	Function* GetCurrentFun();
+	Function* GetCurrentFun();	// do wyrzucenia
 	unsigned int GetPrintOption() const;
 	double GetArrowsLen() const;
 	double GetNearPlane() const;
@@ -37,7 +37,7 @@ public:
 	double& SetBufferZ(double x);
 	unsigned int& SetCuts(unsigned int x);
 	double& SetCutLen(double x);
-	Function* SetCurrentFun(Function* fun);
+	Function* SetCurrentFun(Function* fun); // do wyrzucenia
 	unsigned int& SetPrintOption(unsigned int x);
 	double& SetArrowsLen(double x);
 	double& SetNearPlane(double x);
@@ -58,6 +58,8 @@ public:
 
 	bool GetPressed() const;
 	void SetPressed(bool x);
+	const Function& GetFunction() const;
+	void SetFunction(Function* function);
 private:
 	double x_min, x_max;
 	double y_min, y_max;

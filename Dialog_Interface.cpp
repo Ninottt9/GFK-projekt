@@ -1,24 +1,32 @@
 #include "Dialog_Interface.h"
 
-std::vector<Function*> functions;
-
 Dialog_Interface::Dialog_Interface(wxWindow* parent)
 	:
 	ControlDialog(parent)
 {
-	wxPNGHandler* handler = new wxPNGHandler;
-	wxImage::AddHandler(handler);
+	//wxPNGHandler* handler = new wxPNGHandler;
+	//wxImage::AddHandler(handler);
 
 	PlaneCtrl->SetSelection(20, 60);
-	eq1.LoadFile("eq1.png", wxBITMAP_TYPE_PNG);
-	DisplayEquation->SetBitmap(eq1, wxTOP);
 
-	Function* gravity = new Function();
-	functions.push_back(gravity);
-	Function* fun2 = new Function();
-	Function* fun3 = new Function();
-	functions.push_back(fun2);
-	functions.push_back(fun3);
+	Function* gravity = new Gravity_Function();
+	fun_list.push_back(gravity);
+
+	Function* fun2 = new My_Function();
+	fun_list.push_back(fun2);
+
+	Function* fun3 = new My_Function2();
+	fun_list.push_back(fun3);
+
+
+	DisplayEquation->SetBitmap(gravity->GetBitmap(), wxTOP);
+}
+
+Dialog_Interface::Dialog_Interface(Config* config, wxWindow* parent)
+	: Dialog_Interface(parent)
+{
+	current_config = config;
+	Setup();
 }
 
 void Dialog_Interface::ControlDialogOnChar( wxKeyEvent& event )
@@ -34,30 +42,25 @@ void Dialog_Interface::OnExit( wxCloseEvent& event )
 
 void Dialog_Interface::DisplayEquationOnButtonClick( wxCommandEvent& event )
 {
-// TODO: Implement DisplayEquationOnButtonClick
+	int selection = ChoiceList->GetSelection();
+	if (selection != wxNOT_FOUND) {
+		fun_list[selection]->OpenDialog();
+	}
 }
 
 void Dialog_Interface::ChoiceTextOnMouseEvents( wxMouseEvent& event )
 {
-	/*
-	int selection = ChoiceList->GetSelection();
-	if (selection != wxNOT_FOUND) {
-		wxString str = ChoiceList->GetString(selection);
-		ChoiceText->SetLabelText("Wybrano: " + str);
-	}
-	*/
 }
 
 void Dialog_Interface::ChoiceListOnListBox( wxCommandEvent& event )
 {
 	int selection = ChoiceList->GetSelection();
 	if (selection != wxNOT_FOUND) {
-		current_config->SetCurrentFun(functions[selection]);
+		current_config->SetFunction(fun_list[selection]);
 		wxString str = ChoiceList->GetString(selection);
 		ChoiceText->SetLabelText("Wybrano: " + str);
-		//ChoiceText->Center();
+		DisplayEquation->SetBitmap(current_config->GetFunction().GetBitmap(), wxTOP);
 	}
-	//Refresh();
 }
 
 void Dialog_Interface::PlaneEnableOnToggleButton( wxCommandEvent& event )
@@ -166,5 +169,19 @@ void Dialog_Interface::ArrowCtrlOnSlider( wxCommandEvent& event )
 }
 
 void Dialog_Interface::Refresh() {
-	current_config->SetArrowsLen(50);
+	current_config->SetArrowsLen(50); // ?
+}
+
+
+
+void Dialog_Interface::Setup() {
+	MinCtrl->SetValue(current_config->GetX_Min());
+	MaxCtrl->SetValue(current_config->GetX_Max());
+	MinCtrl1->SetValue(current_config->GetY_Min());
+	MaxCtrl1->SetValue(current_config->GetY_Max());
+	MinCtrl2->SetValue(current_config->GetZ_Min());
+	MaxCtrl2->SetValue(current_config->GetZ_Max());
+	ArrowCtrl->SetValue(current_config->GetArrowsLen());
+	PrecisionCtrl->SetValue(current_config->GetCuts());
+	PlaneCtrl->SetValue(current_config->GetFarPlane());
 }

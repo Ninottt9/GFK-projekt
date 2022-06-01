@@ -12,6 +12,7 @@ Config::Config() {
 	view_rot_x = 0;
 	view_rot_y = 0;
 	view_rot_z = 0;
+	lenght_of_cut = 1;
 }
 
 
@@ -191,4 +192,12 @@ double& Config::SetEnd(double x, double y){
 	end_swipe_x = x;
 	end_swipe_y = y;
 	return end_swipe_x;
+}
+
+const Function& Config::GetFunction() const {
+	return *current_function;
+}
+
+void Config::SetFunction(Function* function){
+	current_function = function;
 }

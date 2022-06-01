@@ -8,15 +8,11 @@
 
 
 
-void draw_space(Config& config, std::vector<Segment>& data, wxPanel* draw_canvas, wxBitmap _pic, wxImage MyImage) {
-	
-	_pic = wxBitmap(draw_canvas->GetSize().GetWidth(), draw_canvas->GetSize().GetHeight());
-	MyImage = _pic.ConvertToImage();
+void draw_space(Config& config, std::vector<Segment>& data, wxPanel* draw_canvas, wxBitmap& _pic, wxImage& MyImage) {
 
 	wxClientDC _dc(draw_canvas);
 	wxBufferedDC dc(&_dc, _pic);
 
-	
 	dc.SetBackground(*wxGREY_BRUSH);
 	dc.Clear();
 
@@ -25,14 +21,14 @@ void draw_space(Config& config, std::vector<Segment>& data, wxPanel* draw_canvas
 	double scl_y = config.GetArrowsLen() / 100.0;
 	double scl_z = config.GetArrowsLen() / 100.0;
 
-	// W radianach
-	double rot_x = config.GetPressed() ?  atan((config.GetEndX() - config.GetStartX()) / draw_canvas->GetSize().GetWidth()) + config.GetViewRotX() : config.GetViewRotX();//atan(config.GetViewRotX()/ draw_canvas->GetSize().GetWidth()); 
-	double rot_y = config.GetPressed() ?  atan((config.GetEndY() - config.GetStartY()) / draw_canvas->GetSize().GetWidth()) + config.GetViewRotY() : config.GetViewRotY();//atan(config.GetViewRotY()/ draw_canvas->GetSize().GetHeight());
-	double rot_z = config.GetPressed() ?  0 : config.GetViewRotZ();//atan(config.GetViewRotZ()/2)*2;
+	double speed = 5.;
+	double rot_x = config.GetPressed() ?  speed * atan((config.GetStartX() - config.GetEndX()) / draw_canvas->GetSize().GetWidth()) + config.GetViewRotX() : config.GetViewRotX();
+	double rot_y = config.GetPressed() ?  speed * atan((config.GetStartY() - config.GetEndY()) / draw_canvas->GetSize().GetHeight()) + config.GetViewRotY() : config.GetViewRotY();
+	double rot_z = config.GetPressed() ?  speed * 0 : config.GetViewRotZ();
 
-	double tr_x = (100 - 100.0) / 50.0;
-	double tr_y = (200 - 100.0) / 50.0;
-	double tr_z = (400 - 100.0) / 50.0;
+	double tr_x = 0.;
+	double tr_y = 0.5;
+	double tr_z = 10.;
 
 	double max = -1000;
 	double min = 1000;
@@ -40,13 +36,19 @@ void draw_space(Config& config, std::vector<Segment>& data, wxPanel* draw_canvas
 	Multiplication_Matrix scale(scl_x, scl_y, scl_z);
 	XRotate_Matrix xrotation(rot_x);
 	YRotate_Matrix yrotation(rot_y);
-	ZRotate_Matrix zrotation(rot_z); /* * 6.28 / 360 */
+	ZRotate_Matrix zrotation(rot_z);
 	Translation_Matrix translation(tr_x, tr_y, tr_z);
 
-	Matrix4 transform1 = translation * zrotation * yrotation * xrotation * scale;
+	double x_shift = 0;// (config.GetX_Max() - config.GetX_Min()) / 2;
+	double y_shift = 0; // (config.GetY_Max() - config.GetY_Min()) / 2;
+	double z_shift = 0; // (config.GetZ_Max() - config.GetZ_Min()) / 2;
+	Translation_Matrix tomiddle(-x_shift,-y_shift,-z_shift);
+	Translation_Matrix frommiddle(x_shift,y_shift,z_shift);
+
+	Matrix4 transform1 = translation * frommiddle * zrotation * yrotation * xrotation * scale * tomiddle;
 
 	Matrix4 m6;
-	m6.data[0][0] = 1;
+	m6.data[0][0] = 1.0 / 2.0; // ?
 	m6.data[1][1] = 1;
 	m6.data[3][2] = 1.0 / 2.0;
 
@@ -83,7 +85,7 @@ void draw_space(Config& config, std::vector<Segment>& data, wxPanel* draw_canvas
 		dc.SetPen(wxPen(wxColour(r, g, b)));
 
 
-
+		// Ustawienie odciecia
 		if ((startPoint.GetZ() > -2.0 && endPoint.GetZ() <= -2.0) || (endPoint.GetZ() > -2.0 && startPoint.GetZ() <= -2.0)) {
 			Vector4 temp1 = endPoint.GetZ() <= -2.0 ? endPoint : startPoint;
 			Vector4 temp2 = endPoint.GetZ() <= -2.0 ? startPoint : endPoint;
@@ -169,36 +171,44 @@ bool load_model(std::string str, MainFrame_Interface& mainframe) {
 }
 
 void create_space(Config& config, std::vector<Segment>& data, std::vector<Segment>& arrow) {
-	for(int z = config.GetZ_Min(); z < config.GetZ_Max(); z += 2)
-	for(int x = config.GetX_Min(); x < config.GetX_Max(); x += 2)
-		for (int y = config.GetY_Min(); y < config.GetY_Max(); y += 2) {
-			/*
-			int r, g, b;
-			double x1, x2, y1, y2, z1, z2;
-			r = g = b = 0;
-			z1 = z+0;
-			z2 = z+1;
-
-			x1 = x2 = x;
-			y1 = y2 = y;
-
-			data.push_back(Segment(Point(x1, y1, z1), Point(x2, y2, z2), Color(r, g, b)));
-			*/
-			add_arrow(Point(x, y, z), arrow, data);
+	for(int z = config.GetZ_Min(); z < config.GetZ_Max(); z += config.GetCutLen())
+	for(int x = config.GetX_Min(); x < config.GetX_Max(); x += config.GetCutLen())
+		for (int y = config.GetY_Min(); y < config.GetY_Max(); y += config.GetCutLen()) {
+			double dir_x, dir_y, dir_z;
+			dir_x = x*0.1, dir_y = y*0.1, dir_z = z*0.1;
+			if (config.GetCurrentFun()) config.GetCurrentFun()->calc(dir_x, dir_y, dir_z);
+			else dir_x = 0, dir_y = 0, dir_z = 0;
+			Point direction(dir_x, dir_y, dir_z);
+			add_arrow(Point(x, y, z), direction, arrow, data);
+			//change_arrow_len(arrow, direction);
 		}
 }
 
-void add_arrow(Point& position, std::vector<Segment>& arrow, std::vector<Segment>& data) {
-	int r, g, b;
-	r = g = b = 0;
-	double x1, x2, y1, y2, z1, z2;
-	for (auto point : arrow) {
+void add_arrow(Point& position, Point& direction, std::vector<Segment>& arrow, std::vector<Segment>& data) {
+	/*for (auto point : arrow) {
 		point += position;
 		data.push_back(point);
+	}*/
+
+	for (int i = 0; i < arrow.size(); i++) {
+		Segment point = arrow[i];
+		point += position;
+		if (i == 0) { point.end += direction;  data.push_back(Segment(point.begin, point.end, Color(point.color))); }
+		else {
+			point += direction;
+			data.push_back(point);
+		}
 	}
 }
 
 void update_space(Config& config, std::vector<Segment>& data, std::vector<Segment>& arrow) {
 	data.clear();
 	create_space(config, data, arrow);
+}
+
+void change_arrow_len(std::vector<Segment>& arrow, Point& direction) {
+	for (int i = 1; i < arrow.size(); i++) {
+		arrow[i] += direction;
+	}
+	//arrow[0].end += direction;
 }
