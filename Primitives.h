@@ -8,7 +8,12 @@ struct Point {
         y += point.y;
         z += point.z;
     }
+    friend Point operator+(Point& point1, Point& point2);
 };
+inline Point operator+(Point& point1, Point& point2) {
+    return Point(point1.x + point2.x, point1.y + point2.y, point1.z + point2.z);
+}
+
 
 struct Color {
     int R, G, B;

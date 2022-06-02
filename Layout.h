@@ -58,13 +58,10 @@ class MainFrame : public wxFrame
 		virtual void m_QuitSelection( wxCommandEvent& event ) { event.Skip(); }
 		virtual void m_AboutSelection( wxCommandEvent& event ) { event.Skip(); }
 		virtual void m_HelpSelection( wxCommandEvent& event ) { event.Skip(); }
-		virtual void DrawCanvasOnChar( wxKeyEvent& event ) { event.Skip(); }
 		virtual void DrawCanvasOnLeftDown( wxMouseEvent& event ) { event.Skip(); }
 		virtual void DrawCanvasOnLeftUp( wxMouseEvent& event ) { event.Skip(); }
 		virtual void DrawCanvasOnMotion( wxMouseEvent& event ) { event.Skip(); }
 		virtual void DrawCanvasOnMouseWheel( wxMouseEvent& event ) { event.Skip(); }
-		virtual void DrawCanvasOnRightDown( wxMouseEvent& event ) { event.Skip(); }
-		virtual void DrawCanvasOnRightUp( wxMouseEvent& event ) { event.Skip(); }
 
 
 	public:

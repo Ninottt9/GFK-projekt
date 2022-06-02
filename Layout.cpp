@@ -70,13 +70,10 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	Menu_File->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrame::m_QuitSelection ), this, File_Quit->GetId());
 	Menu_About->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrame::m_AboutSelection ), this, About_Info->GetId());
 	Menu_About->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrame::m_HelpSelection ), this, About_Help->GetId());
-	DrawCanvas->Connect( wxEVT_CHAR, wxKeyEventHandler( MainFrame::DrawCanvasOnChar ), NULL, this );
 	DrawCanvas->Connect( wxEVT_LEFT_DOWN, wxMouseEventHandler( MainFrame::DrawCanvasOnLeftDown ), NULL, this );
 	DrawCanvas->Connect( wxEVT_LEFT_UP, wxMouseEventHandler( MainFrame::DrawCanvasOnLeftUp ), NULL, this );
 	DrawCanvas->Connect( wxEVT_MOTION, wxMouseEventHandler( MainFrame::DrawCanvasOnMotion ), NULL, this );
 	DrawCanvas->Connect( wxEVT_MOUSEWHEEL, wxMouseEventHandler( MainFrame::DrawCanvasOnMouseWheel ), NULL, this );
-	DrawCanvas->Connect( wxEVT_RIGHT_DOWN, wxMouseEventHandler( MainFrame::DrawCanvasOnRightDown ), NULL, this );
-	DrawCanvas->Connect( wxEVT_RIGHT_UP, wxMouseEventHandler( MainFrame::DrawCanvasOnRightUp ), NULL, this );
 	DrawCanvas->Connect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MainFrame::Refresh ), NULL, this );
 }
 
@@ -85,13 +82,10 @@ MainFrame::~MainFrame()
 	// Disconnect Events
 	this->Disconnect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( MainFrame::OnExit ) );
 	this->Disconnect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MainFrame::Refresh ) );
-	DrawCanvas->Disconnect( wxEVT_CHAR, wxKeyEventHandler( MainFrame::DrawCanvasOnChar ), NULL, this );
 	DrawCanvas->Disconnect( wxEVT_LEFT_DOWN, wxMouseEventHandler( MainFrame::DrawCanvasOnLeftDown ), NULL, this );
 	DrawCanvas->Disconnect( wxEVT_LEFT_UP, wxMouseEventHandler( MainFrame::DrawCanvasOnLeftUp ), NULL, this );
 	DrawCanvas->Disconnect( wxEVT_MOTION, wxMouseEventHandler( MainFrame::DrawCanvasOnMotion ), NULL, this );
 	DrawCanvas->Disconnect( wxEVT_MOUSEWHEEL, wxMouseEventHandler( MainFrame::DrawCanvasOnMouseWheel ), NULL, this );
-	DrawCanvas->Disconnect( wxEVT_RIGHT_DOWN, wxMouseEventHandler( MainFrame::DrawCanvasOnRightDown ), NULL, this );
-	DrawCanvas->Disconnect( wxEVT_RIGHT_UP, wxMouseEventHandler( MainFrame::DrawCanvasOnRightUp ), NULL, this );
 	DrawCanvas->Disconnect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( MainFrame::Refresh ), NULL, this );
 
 }

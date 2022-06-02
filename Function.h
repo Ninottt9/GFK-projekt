@@ -11,7 +11,7 @@ class Function {
 public:
 	Function(){}
 	Function(std::string bitmap_url) {
-		dialog = new ControlParam_Interface(NULL);
+		//dialog = new ControlParam_Interface(NULL);
 		picture.LoadFile(bitmap_url, wxBITMAP_TYPE_PNG);
 	}
 	Function(std::string bitmap_url, std::string name, wxPoint min): name(name), min(min) {
@@ -28,8 +28,16 @@ public:
 	const std::string& GetName() const {
 		return name;
 	}
-	void OpenDialog() {
-		dialog->Show();
+	void OpenDialog(bool control_open) {
+		if (!control_open) {
+			dialog = new ControlParam_Interface(NULL);
+			dialog->Show();
+		}
+	}
+	void CloseDialog(bool control_open) {
+		if (!control_open){
+			delete dialog;
+		}
 	}
 private:
 	wxBitmap picture;

@@ -4,28 +4,13 @@ Dialog_Interface::Dialog_Interface(wxWindow* parent)
 	:
 	ControlDialog(parent)
 {
-	//wxPNGHandler* handler = new wxPNGHandler;
-	//wxImage::AddHandler(handler);
-
-	PlaneCtrl->SetSelection(20, 60);
-
-	Function* gravity = new Gravity_Function();
-	fun_list.push_back(gravity);
-
-	Function* fun2 = new My_Function();
-	fun_list.push_back(fun2);
-
-	Function* fun3 = new My_Function2();
-	fun_list.push_back(fun3);
-
-
-	DisplayEquation->SetBitmap(gravity->GetBitmap(), wxTOP);
 }
 
 Dialog_Interface::Dialog_Interface(Config* config, wxWindow* parent)
-	: Dialog_Interface(parent)
+	:current_config(config), ControlDialog(parent)
 {
-	current_config = config;
+	PlaneCtrl->SetSelection(20, 60);
+	DisplayEquation->SetBitmap(current_config->GetCurrentFun()->GetBitmap(), wxTOP);
 	Setup();
 }
 
@@ -44,7 +29,10 @@ void Dialog_Interface::DisplayEquationOnButtonClick( wxCommandEvent& event )
 {
 	int selection = ChoiceList->GetSelection();
 	if (selection != wxNOT_FOUND) {
-		fun_list[selection]->OpenDialog();
+		if (!current_config->GetControl()) {
+			current_config->GetFunction(selection)->OpenDialog(current_config->GetControl());
+			current_config->SetControl(true);
+		}
 	}
 }
 
@@ -56,10 +44,10 @@ void Dialog_Interface::ChoiceListOnListBox( wxCommandEvent& event )
 {
 	int selection = ChoiceList->GetSelection();
 	if (selection != wxNOT_FOUND) {
-		current_config->SetFunction(fun_list[selection]);
+		current_config->SetCurrentFun(current_config->GetFunction(selection));
 		wxString str = ChoiceList->GetString(selection);
 		ChoiceText->SetLabelText("Wybrano: " + str);
-		DisplayEquation->SetBitmap(current_config->GetFunction().GetBitmap(), wxTOP);
+		DisplayEquation->SetBitmap(current_config->GetFunction(selection)->GetBitmap(), wxTOP);
 	}
 }
 
@@ -70,12 +58,12 @@ void Dialog_Interface::PlaneEnableOnToggleButton( wxCommandEvent& event )
 
 void Dialog_Interface::PlaneCtrlOnScroll( wxScrollEvent& event )
 {
-// TODO: Implement PlaneCtrlOnScroll
+	current_config->SetFarPlane(-PlaneCtrl->GetValue()/50);
 }
 
 void Dialog_Interface::PlaneCtrlOnSlider( wxCommandEvent& event )
 {
-// TODO: Implement PlaneCtrlOnSlider
+	current_config->SetFarPlane(-PlaneCtrl->GetValue() / 50);
 }
 
 void Dialog_Interface::X_MinCtrlOnSpinCtrlDouble( wxSpinDoubleEvent& event )
@@ -140,12 +128,12 @@ void Dialog_Interface::Z_MaxCtrlOnSpinCtrlText( wxCommandEvent& event )
 
 void Dialog_Interface::PrecisionCtrlOnScroll( wxScrollEvent& event )
 {
-	current_config->SetCuts(PrecisionCtrl->GetValue());
+	current_config->SetCutLen(11 - PrecisionCtrl->GetValue() / 10);
 }
 
 void Dialog_Interface::PrecisionCtrlOnSlider( wxCommandEvent& event )
 {
-	current_config->SetCuts(PrecisionCtrl->GetValue());
+	current_config->SetCutLen(11 - PrecisionCtrl->GetValue()/10);
 }
 
 void Dialog_Interface::ColorRadioOnRadioButton( wxCommandEvent& event )
@@ -182,6 +170,7 @@ void Dialog_Interface::Setup() {
 	MinCtrl2->SetValue(current_config->GetZ_Min());
 	MaxCtrl2->SetValue(current_config->GetZ_Max());
 	ArrowCtrl->SetValue(current_config->GetArrowsLen());
-	PrecisionCtrl->SetValue(current_config->GetCuts());
+	PrecisionCtrl->SetValue((11 - current_config->GetCutLen()) * 10);
+	PrecisionCtrl->SetTick((11 - current_config->GetCutLen()) * 10);
 	PlaneCtrl->SetValue(current_config->GetFarPlane());
 }

@@ -1,6 +1,7 @@
 #include "Config.h"
 
-Config::Config() {
+Config::Config(std::vector<Function*>* function_ptr) : function_ptr(function_ptr)
+{
 	closed = true;
 	x_min = -5;
 	x_max = 5;
@@ -13,6 +14,8 @@ Config::Config() {
 	view_rot_y = 0;
 	view_rot_z = 0;
 	lenght_of_cut = 1;
+	control = false;
+	far_plane = -2.0;
 }
 
 
@@ -97,7 +100,7 @@ double Config::GetNearPlane() const{
 	return 1.;
 }
 double Config::GetFarPlane() const{
-	return 1.;
+	return far_plane;
 
 }
 double Config::GetNearest() const{
@@ -130,7 +133,7 @@ double& Config::SetNearPlane(double x){
 
 }
 double& Config::SetFarPlane(double x){
-	return far_plane;
+	return far_plane = x;
 
 }
 double& Config::SetNearest(double x){
@@ -194,10 +197,18 @@ double& Config::SetEnd(double x, double y){
 	return end_swipe_x;
 }
 
-const Function& Config::GetFunction() const {
-	return *current_function;
+Function* Config::GetFunction(int id) const {
+	return (*function_ptr)[id];
 }
 
-void Config::SetFunction(Function* function){
-	current_function = function;
+void Config::SetFunction(int id){
+	this->id = id;
+}
+
+bool Config::GetControl() const {
+	return control;
+}
+
+void Config::SetControl(bool x) {
+	control = x;
 }

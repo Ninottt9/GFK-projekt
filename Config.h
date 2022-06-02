@@ -3,7 +3,7 @@
 
 class Config {
 public:
-	Config();
+	Config(std::vector<Function*>* function_ptr);
 
 	double GetX_Min() const;
 	double GetX_Max() const;
@@ -58,8 +58,12 @@ public:
 
 	bool GetPressed() const;
 	void SetPressed(bool x);
-	const Function& GetFunction() const;
-	void SetFunction(Function* function);
+	Function* GetFunction(int id) const;
+	void SetFunction(int id);
+	
+	bool GetControl() const;
+	void SetControl(bool x);
+
 private:
 	double x_min, x_max;
 	double y_min, y_max;
@@ -86,6 +90,9 @@ private:
 	double view_rot_y;
 	double view_rot_z;
 	bool pressed;
+	bool control;
+
+	std::vector<Function*>* function_ptr;
 public:
 	bool closed;
 };

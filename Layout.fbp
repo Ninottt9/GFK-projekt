@@ -238,13 +238,10 @@
                         <property name="window_extra_style"></property>
                         <property name="window_name"></property>
                         <property name="window_style">wxTAB_TRAVERSAL</property>
-                        <event name="OnChar">DrawCanvasOnChar</event>
                         <event name="OnLeftDown">DrawCanvasOnLeftDown</event>
                         <event name="OnLeftUp">DrawCanvasOnLeftUp</event>
                         <event name="OnMotion">DrawCanvasOnMotion</event>
                         <event name="OnMouseWheel">DrawCanvasOnMouseWheel</event>
-                        <event name="OnRightDown">DrawCanvasOnRightDown</event>
-                        <event name="OnRightUp">DrawCanvasOnRightUp</event>
                         <event name="OnUpdateUI">Refresh</event>
                     </object>
                 </object>

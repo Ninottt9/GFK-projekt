@@ -4,9 +4,6 @@
 #include "Primitives.h"
 #include <fstream>
 
-//std::vector<Segment> data;
-
-
 
 void draw_space(Config& config, std::vector<Segment>& data, wxPanel* draw_canvas, wxBitmap& _pic, wxImage& MyImage) {
 
@@ -84,15 +81,21 @@ void draw_space(Config& config, std::vector<Segment>& data, wxPanel* draw_canvas
 		double b = segment.color.B;
 		dc.SetPen(wxPen(wxColour(r, g, b)));
 
+		// Odciecie
+		if (startPoint.GetZ() > 11.0+config.GetFarPlane()) {
+			continue;
+		}
 
-		// Ustawienie odciecia
-		if ((startPoint.GetZ() > -2.0 && endPoint.GetZ() <= -2.0) || (endPoint.GetZ() > -2.0 && startPoint.GetZ() <= -2.0)) {
-			Vector4 temp1 = endPoint.GetZ() <= -2.0 ? endPoint : startPoint;
-			Vector4 temp2 = endPoint.GetZ() <= -2.0 ? startPoint : endPoint;
-			double r = abs((-2.0 - temp1.data[2]) / (temp2.data[2] - temp1.data[2]));
+
+		double clipping = -2.0;
+		if ((startPoint.GetZ() > clipping && endPoint.GetZ() <= clipping) || (endPoint.GetZ() > clipping && startPoint.GetZ() <= clipping)) {
+			
+			Vector4 temp1 = endPoint.GetZ() <= clipping ? endPoint : startPoint;
+			Vector4 temp2 = endPoint.GetZ() <= clipping ? startPoint : endPoint;
+			double r = abs((clipping - temp1.data[2]) / (temp2.data[2] - temp1.data[2]));
 			temp1.data[0] = (temp2.data[0] - temp1.data[0]) * r + temp1.data[0];
 			temp1.data[1] = (temp2.data[1] - temp1.data[1]) * r + temp1.data[1];
-			temp1.data[2] = -2.0;
+			temp1.data[2] = clipping;
 
 			startPoint = transform2 * temp1;
 			endPoint = transform2 * temp2;
@@ -104,8 +107,9 @@ void draw_space(Config& config, std::vector<Segment>& data, wxPanel* draw_canvas
 			endPoint.data[0] /= endPoint.data[3];
 			endPoint.data[1] /= endPoint.data[3];
 			endPoint.data[2] /= endPoint.data[3];
+		
 		}
-		else if (startPoint.GetZ() <= -2.0 && endPoint.GetZ() <= -2.0) {
+		else if (startPoint.GetZ() <= clipping && endPoint.GetZ() <= clipping) {
 			continue;
 		}
 		else {
@@ -185,20 +189,19 @@ void create_space(Config& config, std::vector<Segment>& data, std::vector<Segmen
 }
 
 void add_arrow(Point& position, Point& direction, std::vector<Segment>& arrow, std::vector<Segment>& data) {
-	/*for (auto point : arrow) {
+	//for (int i = 0; i < arrow.size(); i++) {
+		Segment point = arrow[0];
+		point.end = point.begin + direction; // direction * val
 		point += position;
 		data.push_back(point);
-	}*/
-
-	for (int i = 0; i < arrow.size(); i++) {
-		Segment point = arrow[i];
-		point += position;
+		/*
 		if (i == 0) { point.end += direction;  data.push_back(Segment(point.begin, point.end, Color(point.color))); }
 		else {
 			point += direction;
 			data.push_back(point);
 		}
-	}
+		*/
+	//}
 }
 
 void update_space(Config& config, std::vector<Segment>& data, std::vector<Segment>& arrow) {

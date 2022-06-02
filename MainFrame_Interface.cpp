@@ -8,29 +8,32 @@ MainFrame( parent )
 	SetIcon(wxNullIcon);
 	SetSize(8, 8, 1200, 600);
 	Center();
-	
+
 	_pic = wxBitmap(DrawCanvas->GetSize().GetWidth(), DrawCanvas->GetSize().GetHeight());
 	MyImage.AddHandler(new wxPNGHandler);
+
 	controldialog = nullptr;
 	if (!load_model("arrow1.geo", *this)) wxMessageBox("Failed to load");
-	current_config = new Config();
+	current_config = new Config(&fun_list);
 	
-	create_space(*current_config, data, arrow);
+	Function* gravity = new Gravity_Function();
+	fun_list.push_back(gravity);
 
+	Function* fun2 = new My_Function();
+	fun_list.push_back(fun2);
+
+	Function* fun3 = new My_Function2();
+	fun_list.push_back(fun3);
+
+
+	create_space(*current_config, data, arrow);
 	current_config->SetPressed(false);
+	current_config->SetCurrentFun(gravity);
 }
 
 void MainFrame_Interface::OnExit( wxCloseEvent& event )
 {
 if (wxMessageDialog(NULL,"Are you sure you want to exit?", "Question", wxOK | wxCANCEL).ShowModal() == wxID_OK) Destroy();
-}
-
-void MainFrame_Interface::MainFrameOnLeftDown( wxMouseEvent& event )
-{
-}
-
-void MainFrame_Interface::MainFrameOnLeftUp( wxMouseEvent& event )
-{
 }
 
 void MainFrame_Interface::Refresh( wxUpdateUIEvent& event )
@@ -59,12 +62,14 @@ void MainFrame_Interface::m_ControlPanelSelection( wxCommandEvent& event )
 void MainFrame_Interface::m_FunctionConfigSelection( wxCommandEvent& event )
 {
 	if (Menu_File->IsChecked(Menu_File->FindItem("Function Parameters"))) {
-		controlparam = new ControlParam_Interface(this);
-		controlparam->Show();
+		current_config->GetCurrentFun()->OpenDialog(current_config->GetControl());
+		//controlparam->Show();
 		this->SetFocus();
+		current_config->SetControl(true);
 	}
 	else {
-		delete controlparam;
+		current_config->GetCurrentFun()->CloseDialog(current_config->GetControl());
+		current_config->SetControl(false);
 	}
 	
 }
@@ -102,11 +107,6 @@ void MainFrame_Interface::m_HelpSelection( wxCommandEvent& event )
 	}
 }
 
-void MainFrame_Interface::DrawCanvasOnChar( wxKeyEvent& event )
-{
-// TODO: Implement DrawCanvasOnChar
-}
-
 void MainFrame_Interface::DrawCanvasOnLeftDown( wxMouseEvent& event )
 {
 	current_config->SetStart(event.GetY(), event.GetX());
@@ -142,15 +142,3 @@ void MainFrame_Interface::DrawCanvasOnMouseWheel( wxMouseEvent& event )
 {
 	current_config->SetArrowsLen(current_config->GetArrowsLen() + event.GetWheelRotation()/10);
 }
-
-void MainFrame_Interface::DrawCanvasOnRightDown( wxMouseEvent& event )
-{
-// TODO: Implement DrawCanvasOnRightDown
-}
-
-void MainFrame_Interface::DrawCanvasOnRightUp( wxMouseEvent& event )
-{
-// TODO: Implement DrawCanvasOnRightUp
-}
-
-

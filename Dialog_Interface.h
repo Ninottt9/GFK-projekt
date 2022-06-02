@@ -48,11 +48,11 @@ class Dialog_Interface : public ControlDialog
 		/** Constructor */
 		Dialog_Interface( wxWindow* parent );
 	//// end generated class members
+		
 		void Setup();
 		Dialog_Interface(Config* config, wxWindow* parent);
-
 		Config* current_config;
-		std::vector<Function*> fun_list;
+	
 	private:
 		void Refresh();
 };

@@ -28,9 +28,6 @@ class MainFrame_Interface : public MainFrame
 	protected:
 		// Handlers for MainFrame events.
 		void OnExit( wxCloseEvent& event );
-		void MainFrameOnLeftDown( wxMouseEvent& event );
-		void MainFrameOnLeftUp( wxMouseEvent& event );
-		void MainFrameOnMotion( wxMouseEvent& event );
 		void Refresh( wxUpdateUIEvent& event );
 		void m_ControlPanelSelection( wxCommandEvent& event );
 		void m_FunctionConfigSelection( wxCommandEvent& event );
@@ -38,13 +35,11 @@ class MainFrame_Interface : public MainFrame
 		void m_QuitSelection( wxCommandEvent& event );
 		void m_AboutSelection( wxCommandEvent& event );
 		void m_HelpSelection( wxCommandEvent& event );
-		void DrawCanvasOnChar( wxKeyEvent& event );
 		void DrawCanvasOnLeftDown( wxMouseEvent& event );
 		void DrawCanvasOnLeftUp( wxMouseEvent& event );
 		void DrawCanvasOnMotion( wxMouseEvent& event );
 		void DrawCanvasOnMouseWheel( wxMouseEvent& event );
-		void DrawCanvasOnRightDown( wxMouseEvent& event );
-		void DrawCanvasOnRightUp( wxMouseEvent& event );
+
 	public:
 		/** Constructor */
 		MainFrame_Interface( wxWindow* parent );
@@ -56,7 +51,8 @@ class MainFrame_Interface : public MainFrame
 		Config* current_config;
 		std::vector<Segment> data;
 		std::vector<Segment> arrow;
-		
+		std::vector<Function*> fun_list;
+
 		wxBitmap _pic;
 		wxImage MyImage;
 };
