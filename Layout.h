@@ -159,12 +159,94 @@ class ControlParam : public wxDialog
 		wxStaticText* DesciptionText;
 		wxStaticText* Param1Text;
 		wxSpinCtrlDouble* Param1Ctrl;
+		wxStaticText* Param2Text;
+		wxSpinCtrlDouble* Param2Ctrl;
+		wxStaticText* Param3Text;
+		wxSpinCtrlDouble* Param3Ctrl;
+
+		// Virtual event handlers, override them in your derived class
+		virtual void OnExit( wxCloseEvent& event ) { event.Skip(); }
+		virtual void Param1CtrlOnSpinCtrlDouble( wxSpinDoubleEvent& event ) { event.Skip(); }
+		virtual void Param1CtrlOnSpinCtrlText( wxCommandEvent& event ) { event.Skip(); }
+		virtual void Param2CtrlOnSpinCtrlDouble( wxSpinDoubleEvent& event ) { event.Skip(); }
+		virtual void Param2CtrlOnSpinCtrlText( wxCommandEvent& event ) { event.Skip(); }
+		virtual void Param3CtrlOnSpinCtrlDouble( wxSpinDoubleEvent& event ) { event.Skip(); }
+		virtual void Param3CtrlOnSpinCtrlText( wxCommandEvent& event ) { event.Skip(); }
+
 
 	public:
 
 		ControlParam( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Parameters"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 396,261 ), long style = wxDEFAULT_DIALOG_STYLE );
 
 		~ControlParam();
+
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class ControlParam2
+///////////////////////////////////////////////////////////////////////////////
+class ControlParam2 : public wxDialog
+{
+	private:
+
+	protected:
+		wxStaticText* DesciptionText;
+		wxStaticText* Param1Text;
+		wxSpinCtrlDouble* Param1Ctrl;
+		wxStaticText* Param2Text;
+		wxSpinCtrlDouble* Param2Ctrl;
+		wxStaticText* Param3Text;
+		wxSpinCtrlDouble* Param3Ctrl;
+
+		// Virtual event handlers, override them in your derived class
+		virtual void OnExit( wxCloseEvent& event ) { event.Skip(); }
+		virtual void Param1CtrlOnSpinCtrlDouble( wxSpinDoubleEvent& event ) { event.Skip(); }
+		virtual void Param1CtrlOnSpinCtrlText( wxCommandEvent& event ) { event.Skip(); }
+		virtual void Param2CtrlOnSpinCtrlDouble( wxSpinDoubleEvent& event ) { event.Skip(); }
+		virtual void Param2CtrlOnSpinCtrlText( wxCommandEvent& event ) { event.Skip(); }
+		virtual void Param3CtrlOnSpinCtrlDouble( wxSpinDoubleEvent& event ) { event.Skip(); }
+		virtual void Param3CtrlOnSpinCtrlText( wxCommandEvent& event ) { event.Skip(); }
+
+
+	public:
+
+		ControlParam2( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Parameters"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 396,261 ), long style = wxDEFAULT_DIALOG_STYLE );
+
+		~ControlParam2();
+
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class ControlParam3
+///////////////////////////////////////////////////////////////////////////////
+class ControlParam3 : public wxDialog
+{
+	private:
+
+	protected:
+		wxStaticText* DesciptionText;
+		wxStaticText* Param1Text;
+		wxSpinCtrlDouble* Param1Ctrl;
+		wxStaticText* Param2Text;
+		wxSpinCtrlDouble* Param2Ctrl;
+		wxStaticText* Param3Text;
+		wxSpinCtrlDouble* Param3Ctrl;
+
+		// Virtual event handlers, override them in your derived class
+		virtual void OnExit( wxCloseEvent& event ) { event.Skip(); }
+		virtual void Param1CtrlOnSpinCtrlDouble( wxSpinDoubleEvent& event ) { event.Skip(); }
+		virtual void Param1CtrlOnSpinCtrlText( wxCommandEvent& event ) { event.Skip(); }
+		virtual void Param2CtrlOnSpinCtrlDouble( wxSpinDoubleEvent& event ) { event.Skip(); }
+		virtual void Param2CtrlOnSpinCtrlText( wxCommandEvent& event ) { event.Skip(); }
+		virtual void Param3CtrlOnSpinCtrlDouble( wxSpinDoubleEvent& event ) { event.Skip(); }
+		virtual void Param3CtrlOnSpinCtrlText( wxCommandEvent& event ) { event.Skip(); }
+
+
+	public:
+
+		ControlParam3( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Parameters"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 396,261 ), long style = wxDEFAULT_DIALOG_STYLE );
+
+		~ControlParam3();
 
 };
 
@@ -177,6 +259,10 @@ class HelpDialog : public wxDialog
 
 	protected:
 		wxStaticText* HelpText;
+
+		// Virtual event handlers, override them in your derived class
+		virtual void OnExit( wxCloseEvent& event ) { event.Skip(); }
+
 
 	public:
 

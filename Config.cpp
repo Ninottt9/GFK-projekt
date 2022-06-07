@@ -3,19 +3,21 @@
 Config::Config(std::vector<Function*>* function_ptr) : function_ptr(function_ptr)
 {
 	closed = true;
-	x_min = -5;
-	x_max = 5;
-	y_min = -5;
-	y_max = 5;
-	z_min = -2;
-	z_max = 6;
+	x_min = -1;
+	x_max = 2;
+	y_min = -1;
+	y_max = 2;
+	z_min = -1;
+	z_max = 2;
 	length_of_arrows = 50;
 	view_rot_x = 0;
 	view_rot_y = 0;
 	view_rot_z = 0;
 	lenght_of_cut = 1;
 	control = false;
-	far_plane = -2.0;
+	far_plane = 100.0;
+	scale = 100;
+	plane_enable = false;
 }
 
 
@@ -100,15 +102,15 @@ double Config::GetNearPlane() const{
 	return 1.;
 }
 double Config::GetFarPlane() const{
-	return far_plane;
+	return far_plane *2 /5;
 
 }
 double Config::GetNearest() const{
-	return 1.;
+	return nearest_point;
 
 }
 double Config::GetFurthest() const{
-	return 1.;
+	return furthest_point;
 
 }
 unsigned int Config::GetListId() const{
@@ -137,11 +139,11 @@ double& Config::SetFarPlane(double x){
 
 }
 double& Config::SetNearest(double x){
-	return nearest_point;
+	return nearest_point = x;
 
 }
 double& Config::SetFurthest(double x){
-	return furthest_point;
+	return furthest_point = x;
 
 }
 unsigned int& Config::SetListId(unsigned int x){
@@ -211,4 +213,19 @@ bool Config::GetControl() const {
 
 void Config::SetControl(bool x) {
 	control = x;
+}
+
+double Config::GetScale() const {
+	return scale;
+}
+
+double Config::SetScale(double x) {
+	return scale = x;
+}
+
+void Config::PlaneEnabled(bool x) {
+	plane_enable = x;
+}
+bool Config::isPlaneEnable() const {
+	return plane_enable;
 }

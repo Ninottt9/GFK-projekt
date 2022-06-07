@@ -106,14 +106,14 @@ ControlDialog::ControlDialog( wxWindow* parent, wxWindowID id, const wxString& t
 
 	DialogSizer->Add( DisplaySizer, 1, wxEXPAND, 5 );
 
-	ChoiceText = new wxStaticText( this, wxID_ANY, wxT("Wybrano: Funkcja1"), wxDefaultPosition, wxDefaultSize, 0 );
+	ChoiceText = new wxStaticText( this, wxID_ANY, wxT("Wybrano: -"), wxDefaultPosition, wxDefaultSize, 0 );
 	ChoiceText->Wrap( -1 );
 	DialogSizer->Add( ChoiceText, 1, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
 	ChoiceList = new wxListBox( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 );
-	ChoiceList->Append( wxT("Funkcja eksponencjalna") );
-	ChoiceList->Append( wxT("Funkcja wykladnicza") );
-	ChoiceList->Append( wxT("Funkcja trygonometryczna") );
+	ChoiceList->Append( wxT("Function1") );
+	ChoiceList->Append( wxT("Function2") );
+	ChoiceList->Append( wxT("Function3") );
 	DialogSizer->Add( ChoiceList, 0, wxALL|wxEXPAND, 5 );
 
 	Separator = new wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
@@ -241,7 +241,7 @@ ControlDialog::ControlDialog( wxWindow* parent, wxWindowID id, const wxString& t
 	PrecisionText->Wrap( -1 );
 	PrecisionSizer->Add( PrecisionText, 0, wxALL, 5 );
 
-	PrecisionCtrl = new wxSlider( this, wxID_ANY, 50, 0, 100, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL|wxSL_VALUE_LABEL );
+	PrecisionCtrl = new wxSlider( this, wxID_ANY, 5, 0, 10, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL|wxSL_VALUE_LABEL );
 	PrecisionSizer->Add( PrecisionCtrl, 1, wxALL, 5 );
 
 
@@ -445,9 +445,9 @@ ControlParam::ControlParam( wxWindow* parent, wxWindowID id, const wxString& tit
 	ParamSizer = new wxBoxSizer( wxVERTICAL );
 
 
-	ParamSizer->Add( 0, 10, 0, wxEXPAND, 5 );
+	ParamSizer->Add( 0, 40, 0, wxEXPAND, 5 );
 
-	DesciptionText = new wxStaticText( this, wxID_ANY, wxT("Parametry:"), wxPoint( -1,-1 ), wxDefaultSize, 0 );
+	DesciptionText = new wxStaticText( this, wxID_ANY, wxT("Function: -"), wxPoint( -1,-1 ), wxDefaultSize, 0 );
 	DesciptionText->Wrap( -1 );
 	ParamSizer->Add( DesciptionText, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 
@@ -460,32 +460,290 @@ ControlParam::ControlParam( wxWindow* parent, wxWindowID id, const wxString& tit
 	wxBoxSizer* Param1Sizer;
 	Param1Sizer = new wxBoxSizer( wxHORIZONTAL );
 
-	Param1Text = new wxStaticText( this, wxID_ANY, wxT("Param1: "), wxDefaultPosition, wxDefaultSize, 0 );
+	Param1Text = new wxStaticText( this, wxID_ANY, wxT("a :"), wxDefaultPosition, wxDefaultSize, 0 );
 	Param1Text->Wrap( -1 );
 	Param1Sizer->Add( Param1Text, 0, wxALL, 5 );
 
 
 	Param1Sizer->Add( 100, 0, 0, wxEXPAND, 5 );
 
-	Param1Ctrl = new wxSpinCtrlDouble( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, -100, 100, 0, 1 );
-	Param1Ctrl->SetDigits( 0 );
+	Param1Ctrl = new wxSpinCtrlDouble( this, wxID_ANY, wxT("1"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT, -100, 100, 1.000000, 0.01 );
+	Param1Ctrl->SetDigits( 2 );
 	Param1Sizer->Add( Param1Ctrl, 0, wxALL, 5 );
 
 
 	ControlSizer->Add( Param1Sizer, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
 
+	wxBoxSizer* Param2Sizer;
+	Param2Sizer = new wxBoxSizer( wxHORIZONTAL );
 
-	ParamSizer->Add( ControlSizer, 1, wxEXPAND, 5 );
+	Param2Text = new wxStaticText( this, wxID_ANY, wxT("b :"), wxDefaultPosition, wxDefaultSize, 0 );
+	Param2Text->Wrap( -1 );
+	Param2Sizer->Add( Param2Text, 0, wxALL, 5 );
+
+
+	Param2Sizer->Add( 100, 0, 0, wxEXPAND, 5 );
+
+	Param2Ctrl = new wxSpinCtrlDouble( this, wxID_ANY, wxT("1"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT, -100, 100, 1, 0.01 );
+	Param2Ctrl->SetDigits( 2 );
+	Param2Sizer->Add( Param2Ctrl, 0, wxALL, 5 );
+
+
+	ControlSizer->Add( Param2Sizer, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
+
+	wxBoxSizer* Param3Sizer;
+	Param3Sizer = new wxBoxSizer( wxHORIZONTAL );
+
+	Param3Text = new wxStaticText( this, wxID_ANY, wxT("c :"), wxDefaultPosition, wxDefaultSize, 0 );
+	Param3Text->Wrap( -1 );
+	Param3Sizer->Add( Param3Text, 0, wxALL, 5 );
+
+
+	Param3Sizer->Add( 100, 0, 0, wxEXPAND, 5 );
+
+	Param3Ctrl = new wxSpinCtrlDouble( this, wxID_ANY, wxT("1"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT, -100, 100, 1, 0.01 );
+	Param3Ctrl->SetDigits( 2 );
+	Param3Sizer->Add( Param3Ctrl, 0, wxALL, 5 );
+
+
+	ControlSizer->Add( Param3Sizer, 1, wxEXPAND, 5 );
+
+
+	ParamSizer->Add( ControlSizer, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
 
 
 	this->SetSizer( ParamSizer );
 	this->Layout();
 
 	this->Centre( wxBOTH );
+
+	// Connect Events
+	this->Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( ControlParam::OnExit ) );
+	Param1Ctrl->Connect( wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED, wxSpinDoubleEventHandler( ControlParam::Param1CtrlOnSpinCtrlDouble ), NULL, this );
+	Param1Ctrl->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( ControlParam::Param1CtrlOnSpinCtrlText ), NULL, this );
+	Param2Ctrl->Connect( wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED, wxSpinDoubleEventHandler( ControlParam::Param2CtrlOnSpinCtrlDouble ), NULL, this );
+	Param2Ctrl->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( ControlParam::Param2CtrlOnSpinCtrlText ), NULL, this );
+	Param3Ctrl->Connect( wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED, wxSpinDoubleEventHandler( ControlParam::Param3CtrlOnSpinCtrlDouble ), NULL, this );
+	Param3Ctrl->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( ControlParam::Param3CtrlOnSpinCtrlText ), NULL, this );
 }
 
 ControlParam::~ControlParam()
 {
+	// Disconnect Events
+	this->Disconnect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( ControlParam::OnExit ) );
+	Param1Ctrl->Disconnect( wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED, wxSpinDoubleEventHandler( ControlParam::Param1CtrlOnSpinCtrlDouble ), NULL, this );
+	Param1Ctrl->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( ControlParam::Param1CtrlOnSpinCtrlText ), NULL, this );
+	Param2Ctrl->Disconnect( wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED, wxSpinDoubleEventHandler( ControlParam::Param2CtrlOnSpinCtrlDouble ), NULL, this );
+	Param2Ctrl->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( ControlParam::Param2CtrlOnSpinCtrlText ), NULL, this );
+	Param3Ctrl->Disconnect( wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED, wxSpinDoubleEventHandler( ControlParam::Param3CtrlOnSpinCtrlDouble ), NULL, this );
+	Param3Ctrl->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( ControlParam::Param3CtrlOnSpinCtrlText ), NULL, this );
+
+}
+
+ControlParam2::ControlParam2( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+
+	wxBoxSizer* ParamSizer;
+	ParamSizer = new wxBoxSizer( wxVERTICAL );
+
+
+	ParamSizer->Add( 0, 40, 0, wxEXPAND, 5 );
+
+	DesciptionText = new wxStaticText( this, wxID_ANY, wxT("Function: -"), wxPoint( -1,-1 ), wxDefaultSize, 0 );
+	DesciptionText->Wrap( -1 );
+	ParamSizer->Add( DesciptionText, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+
+
+	ParamSizer->Add( 0, 20, 0, wxEXPAND, 5 );
+
+	wxBoxSizer* ControlSizer;
+	ControlSizer = new wxBoxSizer( wxVERTICAL );
+
+	wxBoxSizer* Param1Sizer;
+	Param1Sizer = new wxBoxSizer( wxHORIZONTAL );
+
+	Param1Text = new wxStaticText( this, wxID_ANY, wxT("a :"), wxDefaultPosition, wxDefaultSize, 0 );
+	Param1Text->Wrap( -1 );
+	Param1Sizer->Add( Param1Text, 0, wxALL, 5 );
+
+
+	Param1Sizer->Add( 100, 0, 0, wxEXPAND, 5 );
+
+	Param1Ctrl = new wxSpinCtrlDouble( this, wxID_ANY, wxT("1"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT, -100, 100, 1.000000, 0.01 );
+	Param1Ctrl->SetDigits( 2 );
+	Param1Sizer->Add( Param1Ctrl, 0, wxALL, 5 );
+
+
+	ControlSizer->Add( Param1Sizer, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
+
+	wxBoxSizer* Param2Sizer;
+	Param2Sizer = new wxBoxSizer( wxHORIZONTAL );
+
+	Param2Text = new wxStaticText( this, wxID_ANY, wxT("b :"), wxDefaultPosition, wxDefaultSize, 0 );
+	Param2Text->Wrap( -1 );
+	Param2Sizer->Add( Param2Text, 0, wxALL, 5 );
+
+
+	Param2Sizer->Add( 100, 0, 0, wxEXPAND, 5 );
+
+	Param2Ctrl = new wxSpinCtrlDouble( this, wxID_ANY, wxT("1"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT, -100, 100, 1, 0.01 );
+	Param2Ctrl->SetDigits( 2 );
+	Param2Sizer->Add( Param2Ctrl, 0, wxALL, 5 );
+
+
+	ControlSizer->Add( Param2Sizer, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
+
+	wxBoxSizer* Param3Sizer;
+	Param3Sizer = new wxBoxSizer( wxHORIZONTAL );
+
+	Param3Text = new wxStaticText( this, wxID_ANY, wxT("c :"), wxDefaultPosition, wxDefaultSize, 0 );
+	Param3Text->Wrap( -1 );
+	Param3Sizer->Add( Param3Text, 0, wxALL, 5 );
+
+
+	Param3Sizer->Add( 100, 0, 0, wxEXPAND, 5 );
+
+	Param3Ctrl = new wxSpinCtrlDouble( this, wxID_ANY, wxT("1"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT, -100, 100, 1, 0.01 );
+	Param3Ctrl->SetDigits( 2 );
+	Param3Sizer->Add( Param3Ctrl, 0, wxALL, 5 );
+
+
+	ControlSizer->Add( Param3Sizer, 1, wxEXPAND, 5 );
+
+
+	ParamSizer->Add( ControlSizer, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
+
+
+	this->SetSizer( ParamSizer );
+	this->Layout();
+
+	this->Centre( wxBOTH );
+
+	// Connect Events
+	this->Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( ControlParam2::OnExit ) );
+	Param1Ctrl->Connect( wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED, wxSpinDoubleEventHandler( ControlParam2::Param1CtrlOnSpinCtrlDouble ), NULL, this );
+	Param1Ctrl->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( ControlParam2::Param1CtrlOnSpinCtrlText ), NULL, this );
+	Param2Ctrl->Connect( wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED, wxSpinDoubleEventHandler( ControlParam2::Param2CtrlOnSpinCtrlDouble ), NULL, this );
+	Param2Ctrl->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( ControlParam2::Param2CtrlOnSpinCtrlText ), NULL, this );
+	Param3Ctrl->Connect( wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED, wxSpinDoubleEventHandler( ControlParam2::Param3CtrlOnSpinCtrlDouble ), NULL, this );
+	Param3Ctrl->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( ControlParam2::Param3CtrlOnSpinCtrlText ), NULL, this );
+}
+
+ControlParam2::~ControlParam2()
+{
+	// Disconnect Events
+	this->Disconnect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( ControlParam2::OnExit ) );
+	Param1Ctrl->Disconnect( wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED, wxSpinDoubleEventHandler( ControlParam2::Param1CtrlOnSpinCtrlDouble ), NULL, this );
+	Param1Ctrl->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( ControlParam2::Param1CtrlOnSpinCtrlText ), NULL, this );
+	Param2Ctrl->Disconnect( wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED, wxSpinDoubleEventHandler( ControlParam2::Param2CtrlOnSpinCtrlDouble ), NULL, this );
+	Param2Ctrl->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( ControlParam2::Param2CtrlOnSpinCtrlText ), NULL, this );
+	Param3Ctrl->Disconnect( wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED, wxSpinDoubleEventHandler( ControlParam2::Param3CtrlOnSpinCtrlDouble ), NULL, this );
+	Param3Ctrl->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( ControlParam2::Param3CtrlOnSpinCtrlText ), NULL, this );
+
+}
+
+ControlParam3::ControlParam3( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+
+	wxBoxSizer* ParamSizer;
+	ParamSizer = new wxBoxSizer( wxVERTICAL );
+
+
+	ParamSizer->Add( 0, 40, 0, wxEXPAND, 5 );
+
+	DesciptionText = new wxStaticText( this, wxID_ANY, wxT("Function: -"), wxPoint( -1,-1 ), wxDefaultSize, 0 );
+	DesciptionText->Wrap( -1 );
+	ParamSizer->Add( DesciptionText, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+
+
+	ParamSizer->Add( 0, 20, 0, wxEXPAND, 5 );
+
+	wxBoxSizer* ControlSizer;
+	ControlSizer = new wxBoxSizer( wxVERTICAL );
+
+	wxBoxSizer* Param1Sizer;
+	Param1Sizer = new wxBoxSizer( wxHORIZONTAL );
+
+	Param1Text = new wxStaticText( this, wxID_ANY, wxT("a :"), wxDefaultPosition, wxDefaultSize, 0 );
+	Param1Text->Wrap( -1 );
+	Param1Sizer->Add( Param1Text, 0, wxALL, 5 );
+
+
+	Param1Sizer->Add( 100, 0, 0, wxEXPAND, 5 );
+
+	Param1Ctrl = new wxSpinCtrlDouble( this, wxID_ANY, wxT("1"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT, -100, 100, 1.000000, 0.01 );
+	Param1Ctrl->SetDigits( 2 );
+	Param1Sizer->Add( Param1Ctrl, 0, wxALL, 5 );
+
+
+	ControlSizer->Add( Param1Sizer, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
+
+	wxBoxSizer* Param2Sizer;
+	Param2Sizer = new wxBoxSizer( wxHORIZONTAL );
+
+	Param2Text = new wxStaticText( this, wxID_ANY, wxT("b :"), wxDefaultPosition, wxDefaultSize, 0 );
+	Param2Text->Wrap( -1 );
+	Param2Sizer->Add( Param2Text, 0, wxALL, 5 );
+
+
+	Param2Sizer->Add( 100, 0, 0, wxEXPAND, 5 );
+
+	Param2Ctrl = new wxSpinCtrlDouble( this, wxID_ANY, wxT("1"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT, -100, 100, 1, 0.01 );
+	Param2Ctrl->SetDigits( 2 );
+	Param2Sizer->Add( Param2Ctrl, 0, wxALL, 5 );
+
+
+	ControlSizer->Add( Param2Sizer, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
+
+	wxBoxSizer* Param3Sizer;
+	Param3Sizer = new wxBoxSizer( wxHORIZONTAL );
+
+	Param3Text = new wxStaticText( this, wxID_ANY, wxT("c :"), wxDefaultPosition, wxDefaultSize, 0 );
+	Param3Text->Wrap( -1 );
+	Param3Sizer->Add( Param3Text, 0, wxALL, 5 );
+
+
+	Param3Sizer->Add( 100, 0, 0, wxEXPAND, 5 );
+
+	Param3Ctrl = new wxSpinCtrlDouble( this, wxID_ANY, wxT("1"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT, -100, 100, 1, 0.01 );
+	Param3Ctrl->SetDigits( 2 );
+	Param3Sizer->Add( Param3Ctrl, 0, wxALL, 5 );
+
+
+	ControlSizer->Add( Param3Sizer, 1, wxEXPAND, 5 );
+
+
+	ParamSizer->Add( ControlSizer, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
+
+
+	this->SetSizer( ParamSizer );
+	this->Layout();
+
+	this->Centre( wxBOTH );
+
+	// Connect Events
+	this->Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( ControlParam3::OnExit ) );
+	Param1Ctrl->Connect( wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED, wxSpinDoubleEventHandler( ControlParam3::Param1CtrlOnSpinCtrlDouble ), NULL, this );
+	Param1Ctrl->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( ControlParam3::Param1CtrlOnSpinCtrlText ), NULL, this );
+	Param2Ctrl->Connect( wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED, wxSpinDoubleEventHandler( ControlParam3::Param2CtrlOnSpinCtrlDouble ), NULL, this );
+	Param2Ctrl->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( ControlParam3::Param2CtrlOnSpinCtrlText ), NULL, this );
+	Param3Ctrl->Connect( wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED, wxSpinDoubleEventHandler( ControlParam3::Param3CtrlOnSpinCtrlDouble ), NULL, this );
+	Param3Ctrl->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( ControlParam3::Param3CtrlOnSpinCtrlText ), NULL, this );
+}
+
+ControlParam3::~ControlParam3()
+{
+	// Disconnect Events
+	this->Disconnect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( ControlParam3::OnExit ) );
+	Param1Ctrl->Disconnect( wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED, wxSpinDoubleEventHandler( ControlParam3::Param1CtrlOnSpinCtrlDouble ), NULL, this );
+	Param1Ctrl->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( ControlParam3::Param1CtrlOnSpinCtrlText ), NULL, this );
+	Param2Ctrl->Disconnect( wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED, wxSpinDoubleEventHandler( ControlParam3::Param2CtrlOnSpinCtrlDouble ), NULL, this );
+	Param2Ctrl->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( ControlParam3::Param2CtrlOnSpinCtrlText ), NULL, this );
+	Param3Ctrl->Disconnect( wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED, wxSpinDoubleEventHandler( ControlParam3::Param3CtrlOnSpinCtrlDouble ), NULL, this );
+	Param3Ctrl->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( ControlParam3::Param3CtrlOnSpinCtrlText ), NULL, this );
+
 }
 
 HelpDialog::HelpDialog( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
@@ -495,7 +753,7 @@ HelpDialog::HelpDialog( wxWindow* parent, wxWindowID id, const wxString& title, 
 	wxStaticBoxSizer* HelpSizer;
 	HelpSizer = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, wxT("Help") ), wxVERTICAL );
 
-	HelpText = new wxStaticText( HelpSizer->GetStaticBox(), wxID_ANY, wxT("A :                      Obróć\nB :                       Przybliż\nC :                       Zwiększ ilość strzałek"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
+	HelpText = new wxStaticText( HelpSizer->GetStaticBox(), wxID_ANY, wxT("Obrot - LPM\nPrzyblizenie - Scroll\n\nOdciecie wykresu odbywa sie przez plaszczyzne prostopadla do widoku.\n"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
 	HelpText->Wrap( -1 );
 	HelpSizer->Add( HelpText, 0, wxALL, 5 );
 
@@ -505,8 +763,14 @@ HelpDialog::HelpDialog( wxWindow* parent, wxWindowID id, const wxString& title, 
 	HelpSizer->Fit( this );
 
 	this->Centre( wxBOTH );
+
+	// Connect Events
+	this->Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( HelpDialog::OnExit ) );
 }
 
 HelpDialog::~HelpDialog()
 {
+	// Disconnect Events
+	this->Disconnect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( HelpDialog::OnExit ) );
+
 }

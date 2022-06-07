@@ -14,21 +14,17 @@ MainFrame( parent )
 
 	controldialog = nullptr;
 	if (!load_model("arrow1.geo", *this)) wxMessageBox("Failed to load");
-	current_config = new Config(&fun_list);
 	
 	Function* gravity = new Gravity_Function();
 	fun_list.push_back(gravity);
+	fun_list.push_back(new My_Function());
+	fun_list.push_back(new My_Function2());
 
-	Function* fun2 = new My_Function();
-	fun_list.push_back(fun2);
-
-	Function* fun3 = new My_Function2();
-	fun_list.push_back(fun3);
-
+	current_config = new Config(&fun_list);
+	current_config->SetCurrentFun(gravity);
 
 	create_space(*current_config, data, arrow);
 	current_config->SetPressed(false);
-	current_config->SetCurrentFun(gravity);
 }
 
 void MainFrame_Interface::OnExit( wxCloseEvent& event )
@@ -40,6 +36,7 @@ void MainFrame_Interface::Refresh( wxUpdateUIEvent& event )
 {
 	update_space(*current_config, data, arrow);
 	draw_space(*current_config, data, DrawCanvas, _pic, MyImage);
+	if(Menu_File->IsChecked(Menu_File->FindItem("Control Panel")))	controldialog->SetPlane();
 }
 
 void MainFrame_Interface::m_ControlPanelSelection( wxCommandEvent& event )
@@ -47,31 +44,23 @@ void MainFrame_Interface::m_ControlPanelSelection( wxCommandEvent& event )
 	if (Menu_File->IsChecked(Menu_File->FindItem("Control Panel"))) {
 		controldialog = new Dialog_Interface(current_config, this);
 		controldialog->Show();
-		//controldialog->current_config = current_config;
 		this->SetFocus();
-		current_config->closed = false;
-	}
-	else {
-		if (!current_config->closed) {
-			controldialog->Destroy();
-			controldialog = nullptr;
-		}
+	}else {
+		controldialog->Close();
+		delete controldialog;
+		controldialog = nullptr;
 	}
 }
 
 void MainFrame_Interface::m_FunctionConfigSelection( wxCommandEvent& event )
 {
 	if (Menu_File->IsChecked(Menu_File->FindItem("Function Parameters"))) {
-		current_config->GetCurrentFun()->OpenDialog(current_config->GetControl());
-		//controlparam->Show();
+		//current_config->GetCurrentFun()->OpenDialog(this);
+		OpenDialog(current_config->GetCurrentFun());
 		this->SetFocus();
-		current_config->SetControl(true);
+	}else {
+		CloseDialog(current_config->GetCurrentFun());
 	}
-	else {
-		current_config->GetCurrentFun()->CloseDialog(current_config->GetControl());
-		current_config->SetControl(false);
-	}
-	
 }
 
 void MainFrame_Interface::m_SaveAsSelection( wxCommandEvent& event )
@@ -92,24 +81,25 @@ void MainFrame_Interface::m_QuitSelection( wxCommandEvent& event )
 
 void MainFrame_Interface::m_AboutSelection( wxCommandEvent& event )
 {
-wxMessageDialog(this, "GFK - Projekt\nContributors:\n", "", wxOK).ShowModal();
+	wxMessageDialog(this, "GFK - Projekt\nContributors:\n\n- Jan Bizoñ\n- Maksym Kazhaiev\n- Micha³ Rogowski\n", "", wxOK).ShowModal();
 }
 
 void MainFrame_Interface::m_HelpSelection( wxCommandEvent& event )
 {
-	if (Menu_File->IsChecked(Menu_About->FindItem("Help"))) {
+	if (Menu_About->IsChecked(Menu_About->FindItem("Help"))) {
 		helpdialog = new HelpDialog_Interface(this);
 		helpdialog->Show();
 		this->SetFocus();
 	}
 	else {
-			delete helpdialog;
+		helpdialog->Destroy();
 	}
 }
 
 void MainFrame_Interface::DrawCanvasOnLeftDown( wxMouseEvent& event )
 {
 	current_config->SetStart(event.GetY(), event.GetX());
+	current_config->SetEnd(event.GetY(), event.GetX());
 	current_config->SetPressed(true);
 }
 
@@ -121,10 +111,17 @@ void MainFrame_Interface::DrawCanvasOnLeftUp( wxMouseEvent& event )
 	double e_y = event.GetX();
 	double speed = 5.;
 
-	double new_x_rot = speed * atan((x - e_x) / DrawCanvas->GetSize().GetWidth()) + current_config->GetViewRotX();
-	double new_y_rot =  speed * atan((y - e_y) / DrawCanvas->GetSize().GetHeight()) + current_config->GetViewRotY();
+	//double new_y_rot =  speed * atan((y - e_y) / DrawCanvas->GetSize().GetHeight()) + current_config->GetViewRotY();
+	//double new_x_rot = speed * atan((x - e_x) / DrawCanvas->GetSize().GetWidth()) + current_config->GetViewRotX();
+	//double new_z_rot = speed * atan((y - e_y) / DrawCanvas->GetSize().GetHeight()) + current_config->GetViewRotZ();
+	double new_y_rot = current_config->GetViewRotY();
+	double new_x_rot = current_config->GetViewRotX();
+	double new_z_rot = current_config->GetViewRotZ();
+	double l_x_rot = atan((x - e_x) / DrawCanvas->GetSize().GetWidth());
+	double l_y_rot = atan((y - e_y) / DrawCanvas->GetSize().GetHeight());
+	local_to_global_rot(new_x_rot, new_y_rot, new_z_rot, l_x_rot, l_y_rot);
 
-	current_config->SetViewRotZ(0);
+	current_config->SetViewRotZ(new_z_rot);
 	current_config->SetViewRotX(new_x_rot);
 	current_config->SetViewRotY(new_y_rot);
 	current_config->SetPressed(false);
@@ -140,5 +137,45 @@ void MainFrame_Interface::DrawCanvasOnMotion( wxMouseEvent& event )
 
 void MainFrame_Interface::DrawCanvasOnMouseWheel( wxMouseEvent& event )
 {
-	current_config->SetArrowsLen(current_config->GetArrowsLen() + event.GetWheelRotation()/10);
+	current_config->SetScale(current_config->GetScale() + event.GetWheelRotation());
+}
+
+void MainFrame_Interface::CheckHandler(std::string name) {
+	if (Menu_About->FindItem(name) != wxNOT_FOUND) {
+		Menu_About->Check(Menu_About->FindItem(name), false);
+	}
+	else if (Menu_File->FindItem(name) != wxNOT_FOUND) {
+		if (name == "Function Parameters") {
+			Menu_File->Check(Menu_File->FindItem(name), false);
+			//delete controlparam;
+			controlparam = nullptr;
+		}
+		else if (name == "Control Panel") {
+			Menu_File->Check(Menu_File->FindItem(name), false);
+		}
+	}
+}
+
+
+void MainFrame_Interface::OpenDialog(Function* fun) {
+	CloseDialog(fun);
+	
+	if (fun->GetName() == "gravity")
+		controlparam = new ControlParam_Interface(this, fun);
+	else if (fun->GetName() == "water")
+		controlparam = new ControlParam_Interface(this, fun);
+	else if (fun->GetName() == "sin")
+		controlparam = new ControlParam_Interface(this, fun);
+	controlparam->Show();
+	Menu_File->Check(Menu_File->FindItem("Function Parameters"), true);
+
+}
+
+void MainFrame_Interface::CloseDialog(Function* fun) {
+	//ControlParam_Interface* dialog = fun->GetDialog();
+	if (controlparam) {
+		controlparam->Close();
+		delete controlparam;
+		controlparam = nullptr;
+	}
 }

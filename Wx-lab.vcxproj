@@ -153,6 +153,8 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="eq1.png" />
+    <Image Include="eq2.png" />
+    <Image Include="eq3.png" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Config.h" />

@@ -3,7 +3,7 @@
 #include "VectorMatrix.h"
 #include "Primitives.h"
 #include <fstream>
-
+#include <array>
 
 void draw_space(Config& config, std::vector<Segment>& data, wxPanel* draw_canvas, wxBitmap& _pic, wxImage& MyImage) {
 
@@ -14,14 +14,22 @@ void draw_space(Config& config, std::vector<Segment>& data, wxPanel* draw_canvas
 	dc.Clear();
 
 
-	double scl_x = config.GetArrowsLen() / 100.0;
-	double scl_y = config.GetArrowsLen() / 100.0;
-	double scl_z = config.GetArrowsLen() / 100.0;
+	double scl_x = config.GetScale() / 100;
+	double scl_y = config.GetScale() / 100;
+	double scl_z = config.GetScale() / 100;
 
+	/*
 	double speed = 5.;
-	double rot_x = config.GetPressed() ?  speed * atan((config.GetStartX() - config.GetEndX()) / draw_canvas->GetSize().GetWidth()) + config.GetViewRotX() : config.GetViewRotX();
-	double rot_y = config.GetPressed() ?  speed * atan((config.GetStartY() - config.GetEndY()) / draw_canvas->GetSize().GetHeight()) + config.GetViewRotY() : config.GetViewRotY();
-	double rot_z = config.GetPressed() ?  speed * 0 : config.GetViewRotZ();
+	double rot_y = config.GetPressed() ? speed * atan((config.GetStartY() - config.GetEndY()) / draw_canvas->GetSize().GetHeight()) + config.GetViewRotY() : config.GetViewRotY();
+	double rot_x = config.GetPressed() ? speed * atan((config.GetStartX() - config.GetEndX()) / draw_canvas->GetSize().GetWidth()) + config.GetViewRotX() : config.GetViewRotX();
+	double rot_z = config.GetPressed() ? speed * atan((config.GetStartY() - config.GetEndY()) / draw_canvas->GetSize().GetHeight()) + config.GetViewRotZ() : config.GetViewRotZ();
+	*/
+	double rot_x = config.GetViewRotX();
+	double rot_y = config.GetViewRotY();
+	double rot_z = config.GetViewRotZ();
+	double l_rot_y = atan((config.GetStartY() - config.GetEndY()) / draw_canvas->GetSize().GetHeight());
+	double l_rot_x = atan((config.GetStartX() - config.GetEndX()) / draw_canvas->GetSize().GetWidth());
+	if(config.GetPressed())	local_to_global_rot(rot_x, rot_y, rot_z, l_rot_x, l_rot_y);
 
 	double tr_x = 0.;
 	double tr_y = 0.5;
@@ -39,8 +47,8 @@ void draw_space(Config& config, std::vector<Segment>& data, wxPanel* draw_canvas
 	double x_shift = 0;// (config.GetX_Max() - config.GetX_Min()) / 2;
 	double y_shift = 0; // (config.GetY_Max() - config.GetY_Min()) / 2;
 	double z_shift = 0; // (config.GetZ_Max() - config.GetZ_Min()) / 2;
-	Translation_Matrix tomiddle(-x_shift,-y_shift,-z_shift);
-	Translation_Matrix frommiddle(x_shift,y_shift,z_shift);
+	Translation_Matrix tomiddle(-x_shift, -y_shift, -z_shift);
+	Translation_Matrix frommiddle(x_shift, y_shift, z_shift);
 
 	Matrix4 transform1 = translation * frommiddle * zrotation * yrotation * xrotation * scale * tomiddle;
 
@@ -57,17 +65,35 @@ void draw_space(Config& config, std::vector<Segment>& data, wxPanel* draw_canvas
 
 	Matrix4 transform2 = m7 * m6;
 
-
-
-	for (Segment& segment : data) {
-		double middle = (segment.begin.y + segment.end.y) / 2;
-		if (middle < min) {
-			min = middle;
+	std::array<Point, 8> box = {
+		Point(config.GetX_Min(), config.GetY_Min(), config.GetZ_Min()),
+		Point(config.GetX_Min(), config.GetY_Max(), config.GetZ_Min()),
+		Point(config.GetX_Min(), config.GetY_Min(), config.GetZ_Max()),
+		Point(config.GetX_Min(), config.GetY_Max(), config.GetZ_Max()),
+		Point(config.GetX_Max(), config.GetY_Min(), config.GetZ_Min()),
+		Point(config.GetX_Max(), config.GetY_Max(), config.GetZ_Min()),
+		Point(config.GetX_Max(), config.GetY_Min(), config.GetZ_Max()),
+		Point(config.GetX_Max(), config.GetY_Max(), config.GetZ_Max()),
+	};
+	for (Point& point : box) {
+		Vector4 vec, result;
+		vec.Set(point.x, point.y, point.z);
+		result = transform1 * vec;
+		
+		//double dist = result.GetX() * result.GetX() + result.GetY() * result.GetY() + result.GetZ() * result.GetZ();
+		double dist = result.GetZ();
+		if (dist < min) {
+			min = dist;
 		}
-		else if (middle > max) {
-			max = middle;
+		else if (dist > max) {
+			max = dist;
 		}
 	}
+	double bar_scale = 5;
+	config.SetFurthest(bar_scale * max);
+	config.SetNearest(bar_scale * min);
+
+
 	for (Segment segment : data) {
 
 		transform_line(transform1, &segment);
@@ -82,7 +108,7 @@ void draw_space(Config& config, std::vector<Segment>& data, wxPanel* draw_canvas
 		dc.SetPen(wxPen(wxColour(r, g, b)));
 
 		// Odciecie
-		if (startPoint.GetZ() > 11.0+config.GetFarPlane()) {
+		if (config.isPlaneEnable() && startPoint.GetZ() > config.GetFarPlane()) {
 			continue;
 		}
 
@@ -175,33 +201,76 @@ bool load_model(std::string str, MainFrame_Interface& mainframe) {
 }
 
 void create_space(Config& config, std::vector<Segment>& data, std::vector<Segment>& arrow) {
-	for(int z = config.GetZ_Min(); z < config.GetZ_Max(); z += config.GetCutLen())
-	for(int x = config.GetX_Min(); x < config.GetX_Max(); x += config.GetCutLen())
-		for (int y = config.GetY_Min(); y < config.GetY_Max(); y += config.GetCutLen()) {
-			double dir_x, dir_y, dir_z;
-			dir_x = x*0.1, dir_y = y*0.1, dir_z = z*0.1;
-			if (config.GetCurrentFun()) config.GetCurrentFun()->calc(dir_x, dir_y, dir_z);
-			else dir_x = 0, dir_y = 0, dir_z = 0;
-			Point direction(dir_x, dir_y, dir_z);
-			add_arrow(Point(x, y, z), direction, arrow, data);
-			//change_arrow_len(arrow, direction);
-		}
+	float z_m = config.GetCutLen() / (config.GetZ_Max() - config.GetZ_Min());
+	float y_m = config.GetCutLen() / (config.GetY_Max() - config.GetY_Min());
+	float x_m = config.GetCutLen() / (config.GetX_Max() - config.GetX_Min()); // to jest chyba nie potrzebne
+	double min_size = 2000;
+	double max_size = 0;
+	for(double z = config.GetZ_Min(); z < config.GetZ_Max(); z += config.GetCutLen())
+		for(double x = config.GetX_Min(); x < config.GetX_Max(); x += config.GetCutLen())
+			for (double y = config.GetY_Min(); y < config.GetY_Max(); y += config.GetCutLen()) {
+				double dir_x, dir_y, dir_z;
+				//dir_x = x*0.1, dir_y = y*0.1, dir_z = z*0.1;
+				//dir_x = x * x_m, dir_y = y * y_m, dir_z = z * z_m;
+				dir_x = x, dir_y = y, dir_z = z;
+
+				if (config.GetCurrentFun()) {
+					double l = sqrt(x * x + y * y + z * z);
+					//int r = 255. * ((l - min_size) / (max_size-min_size));
+					//int b = 255. * (1 - (l - min_size) / (max_size - min_size));
+					//Color color(r, 0, b);
+					config.GetCurrentFun()->calc(dir_x, dir_y, dir_z);
+					double r = sqrt(dir_x * dir_x + dir_y * dir_y + dir_z + dir_z);
+					if (r < min_size) min_size = r;
+					if (r > max_size) max_size = r;
+
+					add_arrow(config, Point(x, y, z), Point(dir_x, dir_y, dir_z), arrow, data);
+				}
+			}
+	for (auto& point : data) {
+		point.color.R = 255. * ((point.color.R - min_size) / (max_size - min_size));
+		point.color.B = 255. * (1 - (point.color.B - min_size) / (max_size - min_size));
+	}
 }
 
-void add_arrow(Point& position, Point& direction, std::vector<Segment>& arrow, std::vector<Segment>& data) {
-	//for (int i = 0; i < arrow.size(); i++) {
-		Segment point = arrow[0];
-		point.end = point.begin + direction; // direction * val
+//#include <string>
+
+void add_arrow(Config& config, Point& position, Point& direction, std::vector<Segment>& arrow, std::vector<Segment>& data) {
+	double eps = 1e-5;
+	double min_size = 2000;
+	double max_size = 0;
+	for (int i = 0; i < arrow.size(); i++) {
+		Segment point = arrow[i];
+		// przeliczenie na uklad r p
+		double r = sqrt(direction.x * direction.x + direction.y * direction.y + direction.z * direction.z); // to mozna wyciagnac z petli
+		double p1 = direction.x > 0 ? asin(direction.y/ r) : -asin(direction.y/ r) + 3.14; 
+		double p2 = direction.x > 0 ? -asin(direction.z/ r) : asin(direction.z/ r);
+		p1 = fabs(direction.x) < eps ? asin(direction.y / r) : p1; // poprawic
+		p2 = fabs(direction.x) < eps ? -asin(direction.z / r) : p2;
+
+		// Drugi sposob
+		Color color(r, 0, r);
+		point.color = color;
+
+
+		// to chyba nie tutaj
+		//Multiplication_Matrix arr_leng = Multiplication_Matrix(r, r, r); // pierwszy sposob wyswietlania
+		// nie dzial jeszcze dal wszystkich
+
+		Multiplication_Matrix leng = Multiplication_Matrix(config.GetArrowsLen() / 100.0, config.GetArrowsLen() / 100.0, config.GetArrowsLen() / 100.0);
+		ZRotate_Matrix z_rotate = p1;
+		YRotate_Matrix y_rotate = p2;
+		transform_line(leng, &point);
+		//transform_line(arr_leng, &point); // pierwszy sposob wyswietlania 
+
+		transform_line(z_rotate, &point);
+		transform_line(y_rotate, &point);
+
+		//przesuniecie w ukladzie wspolrzednych
 		point += position;
+
 		data.push_back(point);
-		/*
-		if (i == 0) { point.end += direction;  data.push_back(Segment(point.begin, point.end, Color(point.color))); }
-		else {
-			point += direction;
-			data.push_back(point);
-		}
-		*/
-	//}
+	}
 }
 
 void update_space(Config& config, std::vector<Segment>& data, std::vector<Segment>& arrow) {
@@ -214,4 +283,15 @@ void change_arrow_len(std::vector<Segment>& arrow, Point& direction) {
 		arrow[i] += direction;
 	}
 	//arrow[0].end += direction;
+} // niepotrzebne
+
+
+void local_to_global_rot(double& g_x_rot, double& g_y_rot, double& g_z_rot, double l_x_rot, double l_y_rot) {
+	double speed = 5.;
+	double buff_x = speed * sin(l_x_rot)* cos(g_z_rot)* cos(g_y_rot); // sin(l_x_rot)* cos(g_y_rot) - sin(l_y_rot) * cos(g_z_rot);
+	double buff_y = speed * sin(l_y_rot)* cos(g_x_rot)* cos(g_z_rot);// sin(l_x_rot)* cos(g_z_rot) + sin(l_y_rot) * cos(g_x_rot);
+	double buff_z = speed * sin(l_x_rot) * cos(g_x_rot) * sin(g_y_rot);// +sin(g_x_rot) * sin(l_y_rot));// sin(l_x_rot)* cos(g_y_rot) + sin(l_y_rot) * cos(g_x_rot); // tutaj chyba cos zle
+	g_x_rot += buff_x;
+	g_y_rot += buff_y;
+	g_z_rot += buff_z;
 }

@@ -64,6 +64,12 @@ public:
 	bool GetControl() const;
 	void SetControl(bool x);
 
+	double GetScale() const;
+	double SetScale(double x);
+
+	void PlaneEnabled(bool x);
+	bool isPlaneEnable() const;
+
 private:
 	double x_min, x_max;
 	double y_min, y_max;
@@ -91,6 +97,8 @@ private:
 	double view_rot_z;
 	bool pressed;
 	bool control;
+	double scale;
+	bool plane_enable;
 
 	std::vector<Function*>* function_ptr;
 public:

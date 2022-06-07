@@ -4,41 +4,19 @@
 #include <wx/gdicmn.h>
 #include "ControlParam_Interface.h"
 
-//class ControlParam_Interface;
-
+class MainFrame_Interface;
 
 class Function {
 public:
-	Function(){}
-	Function(std::string bitmap_url) {
-		//dialog = new ControlParam_Interface(NULL);
-		picture.LoadFile(bitmap_url, wxBITMAP_TYPE_PNG);
-	}
-	Function(std::string bitmap_url, std::string name, wxPoint min): name(name), min(min) {
-		picture.LoadFile(bitmap_url, wxBITMAP_TYPE_PNG);
-	}
-	virtual void calc(double& x, double& y, double& z) { }
-	void find_min(){}
-	const wxBitmap& GetBitmap() const {
-		return picture;
-	}
-	void SetName(std::string new_name) {
-		name = new_name;
-	}
-	const std::string& GetName() const {
-		return name;
-	}
-	void OpenDialog(bool control_open) {
-		if (!control_open) {
-			dialog = new ControlParam_Interface(NULL);
-			dialog->Show();
-		}
-	}
-	void CloseDialog(bool control_open) {
-		if (!control_open){
-			delete dialog;
-		}
-	}
+	Function();
+	Function(std::string bitmap_url);
+	Function(std::string bitmap_url, std::string name, wxPoint min = wxPoint(0,0));
+	virtual void calc(double& x, double& y, double& z);
+	void find_min();
+	const wxBitmap& GetBitmap() const;
+	void SetName(std::string new_name);
+	const std::string& GetName() const;
+	ControlParam_Interface* GetDialog() const;
 private:
 	wxBitmap picture;
 	wxPoint min;
@@ -48,14 +26,21 @@ private:
 
 class Gravity_Function : public Function {
 public:
-	Gravity_Function() : Function("eq1.png"), G{1}, M{1}, m{1} {}
+	Gravity_Function() : Function("eq1.png", "gravity"), G{1}, M{1}, m{1} {}
 	void calc(double& x, double& y, double& z) {
 		double r = sqrt(x * x + y * y + z * z);
-		//double p1 = x*y > 0 ? atan2(x, y) : atan2(x, y); // ?
-		//double p2 = x*z > 0 ? atan2(x, z) : atan2(x, z); // ?
-		x *= G*m*M/r;
-		y *= G*m*M/r;
-		z *= G*m*m/r;
+		x *= G*m*M/(r*r);
+		y *= G*m*M/(r*r);
+		z *= G*m*m/(r*r);
+	}
+	void Set1(double G) {
+		this->G = G;
+	}
+	void Set2(double m) {
+		this->m = m;
+	}
+	void Set3(double M) {
+		this->M = M;
 	}
 private:
 	double G;
@@ -64,27 +49,23 @@ private:
 
 class My_Function : public Function {
 public:
-	My_Function() : Function("eq2.png") {}
+	My_Function() : a(1), b(1), c(1), Function("eq2.png", "water") {}
 	void calc(double& x, double& y, double& z) {
 		double r = 1. / sqrt(x * x + y * y + z * z);
-		//double p1 = x*y > 0 ? atan2(x, y) : atan2(x, y); // ?
-		//double p2 = x*z > 0 ? atan2(x, z) : atan2(x, z); // ?
-		x *= G * m * M / r;
-		y *= G * m * M / r;
-		z *= G * m * m / r;
+		double buff_x = x;
+		x *= a* (sin(x) + sin(y));
+		y *= b *( sin(buff_x) - sin(y));
+		z *= c;
 	}
 private:
-	double G;
-	double m, M;
+	double a, b, c;
 };
 
 class My_Function2 : public Function {
 public:
-	My_Function2() : Function("eq3.png") {}
+	My_Function2() : a(1), b(1), c(1), Function("eq3.png", "sin") {}
 	void calc(double& x, double& y, double& z) {
 		double r = 1. / sqrt(x * x + y * y + z * z);
-		//double p1 = x*y > 0 ? atan2(x, y) : atan2(x, y); // ?
-		//double p2 = x*z > 0 ? atan2(x, z) : atan2(x, z); // ?
 		double x_buff = x; 
 		double y_buff = y;
 		
