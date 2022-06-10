@@ -1,17 +1,10 @@
 #include "Function.h"
 #include "MainFrame_Interface.h"
 
-
-Function::Function() {}
-Function::Function(std::string bitmap_url) {
-	//dialog = new ControlParam_Interface(NULL);
-	picture.LoadFile(bitmap_url, wxBITMAP_TYPE_PNG);
-}
 Function::Function(std::string bitmap_url, std::string name, wxPoint min) : name(name), min(min) {
 	picture.LoadFile(bitmap_url, wxBITMAP_TYPE_PNG);
 }
-void Function::calc(double& x, double& y, double& z) { }
-void Function::find_min() {}
+void Function::calc(double& x, double& y, double& z){}
 const wxBitmap& Function::GetBitmap() const {
 	return picture;
 }

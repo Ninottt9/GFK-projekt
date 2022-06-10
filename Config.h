@@ -1,5 +1,6 @@
 #pragma once
 #include "Function.h"
+#include "VectorMatrix.h"
 
 class Config {
 public:
@@ -70,6 +71,10 @@ public:
 	void PlaneEnabled(bool x);
 	bool isPlaneEnable() const;
 
+	Matrix4 GetRotation() const;
+	void SetRotation(XRotate_Matrix x, YRotate_Matrix y, ZRotate_Matrix z, XRotate_Matrix l_x, YRotate_Matrix l_y);
+	void SetRotation(Matrix4 rot, XRotate_Matrix l_x, YRotate_Matrix l_y);
+
 private:
 	double x_min, x_max;
 	double y_min, y_max;
@@ -99,6 +104,7 @@ private:
 	bool control;
 	double scale;
 	bool plane_enable;
+	Matrix4 rotation;
 
 	std::vector<Function*>* function_ptr;
 public:

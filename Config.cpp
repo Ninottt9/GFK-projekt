@@ -3,12 +3,12 @@
 Config::Config(std::vector<Function*>* function_ptr) : function_ptr(function_ptr)
 {
 	closed = true;
-	x_min = -1;
-	x_max = 2;
-	y_min = -1;
-	y_max = 2;
-	z_min = -1;
-	z_max = 2;
+	x_min = -4;
+	x_max = 5;
+	y_min = -4;
+	y_max = 5;
+	z_min = -4;
+	z_max = 5;
 	length_of_arrows = 50;
 	view_rot_x = 0;
 	view_rot_y = 0;
@@ -18,6 +18,7 @@ Config::Config(std::vector<Function*>* function_ptr) : function_ptr(function_ptr
 	far_plane = 100.0;
 	scale = 100;
 	plane_enable = false;
+	rotation = XRotate_Matrix(0);
 }
 
 
@@ -169,6 +170,8 @@ double Config::GetViewRotZ() const {
 	return view_rot_z;
 }
 
+
+
 double& Config::SetViewRotX(double x) {
 	return view_rot_x = x;
 }
@@ -228,4 +231,15 @@ void Config::PlaneEnabled(bool x) {
 }
 bool Config::isPlaneEnable() const {
 	return plane_enable;
+}
+
+Matrix4 Config::GetRotation() const {
+	return rotation;
+}
+void Config::SetRotation(XRotate_Matrix x, YRotate_Matrix y, ZRotate_Matrix z, XRotate_Matrix l_x, YRotate_Matrix l_y) {
+	rotation =  l_x * l_y * z * y * x;
+}
+
+void Config::SetRotation(Matrix4 rot, XRotate_Matrix l_x, YRotate_Matrix l_y) {
+	rotation = l_x * l_y * rot;
 }

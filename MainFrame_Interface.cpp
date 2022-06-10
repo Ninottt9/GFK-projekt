@@ -1,4 +1,5 @@
 #include "MainFrame_Interface.h"
+#include "VectorMatrix.h"
 
 MainFrame_Interface::MainFrame_Interface( wxWindow* parent )
 :
@@ -111,19 +112,12 @@ void MainFrame_Interface::DrawCanvasOnLeftUp( wxMouseEvent& event )
 	double e_y = event.GetX();
 	double speed = 5.;
 
-	//double new_y_rot =  speed * atan((y - e_y) / DrawCanvas->GetSize().GetHeight()) + current_config->GetViewRotY();
-	//double new_x_rot = speed * atan((x - e_x) / DrawCanvas->GetSize().GetWidth()) + current_config->GetViewRotX();
-	//double new_z_rot = speed * atan((y - e_y) / DrawCanvas->GetSize().GetHeight()) + current_config->GetViewRotZ();
-	double new_y_rot = current_config->GetViewRotY();
-	double new_x_rot = current_config->GetViewRotX();
-	double new_z_rot = current_config->GetViewRotZ();
-	double l_x_rot = atan((x - e_x) / DrawCanvas->GetSize().GetWidth());
-	double l_y_rot = atan((y - e_y) / DrawCanvas->GetSize().GetHeight());
-	local_to_global_rot(new_x_rot, new_y_rot, new_z_rot, l_x_rot, l_y_rot);
+	double l_x_rot = speed * atan((x - e_x) / DrawCanvas->GetSize().GetWidth());
+	double l_y_rot = speed * atan((y - e_y) / DrawCanvas->GetSize().GetHeight());
+	XRotate_Matrix l_x(l_x_rot);
+	YRotate_Matrix l_y(l_y_rot);
+	current_config->SetRotation(current_config->GetRotation(), l_x, l_y);
 
-	current_config->SetViewRotZ(new_z_rot);
-	current_config->SetViewRotX(new_x_rot);
-	current_config->SetViewRotY(new_y_rot);
 	current_config->SetPressed(false);
 }
 
@@ -160,11 +154,11 @@ void MainFrame_Interface::CheckHandler(std::string name) {
 void MainFrame_Interface::OpenDialog(Function* fun) {
 	CloseDialog(fun);
 	
-	if (fun->GetName() == "gravity")
+	if (fun->GetName() == "Central")
 		controlparam = new ControlParam_Interface(this, fun);
-	else if (fun->GetName() == "water")
+	else if (fun->GetName() == "Sinusoidal")
 		controlparam = new ControlParam_Interface(this, fun);
-	else if (fun->GetName() == "sin")
+	else if (fun->GetName() == "Local Vortex")
 		controlparam = new ControlParam_Interface(this, fun);
 	controlparam->Show();
 	Menu_File->Check(Menu_File->FindItem("Function Parameters"), true);

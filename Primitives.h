@@ -16,8 +16,8 @@ inline Point operator+(Point& point1, Point& point2) {
 
 
 struct Color {
-    int R, G, B;
-    Color(int _R, int _G, int _B) : R(_R), G(_G), B(_B) {}
+    double R, G, B;
+    Color(double _R, double _G, double _B) : R(_R), G(_G), B(_B) {}
 };
 
 struct Segment {

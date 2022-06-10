@@ -9,7 +9,6 @@ Dialog_Interface::Dialog_Interface(wxWindow* parent)
 Dialog_Interface::Dialog_Interface(Config* config, wxWindow* parent)
 	: parent(static_cast<MainFrame_Interface*>(parent)), current_config(config), ControlDialog(parent)
 {
-	//DisplayEquation->SetBitmap(current_config->GetCurrentFun()->GetBitmap(), wxTOP);
 	for (int i = 0; i < this->parent->fun_list.size(); i++) {
 		ChoiceList->SetString( i,  config->GetFunction(i)->GetName());
 	}
