@@ -1,5 +1,5 @@
-#include "HelpDialog_Interface.h"
-#include "MainFrame_Interface.h"
+#include "include/HelpDialog_Interface.h"
+#include "include/MainFrame_Interface.h"
 
 HelpDialog_Interface::HelpDialog_Interface(MainFrame_Interface* parent )
 : parent(parent), HelpDialog( parent )

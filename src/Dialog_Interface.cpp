@@ -1,11 +1,11 @@
-#include "Dialog_Interface.h"
-#include "MainFrame_Interface.h"
-
+#include "include/Dialog_Interface.h"
+#include "include/MainFrame_Interface.h"
+/*
 Dialog_Interface::Dialog_Interface(wxWindow* parent)
 	: ControlDialog(parent)
 {
 }
-
+*/
 Dialog_Interface::Dialog_Interface(Config* config, wxWindow* parent)
 	: parent(static_cast<MainFrame_Interface*>(parent)), current_config(config), ControlDialog(parent)
 {
@@ -13,12 +13,6 @@ Dialog_Interface::Dialog_Interface(Config* config, wxWindow* parent)
 		ChoiceList->SetString( i,  config->GetFunction(i)->GetName());
 	}
 	Setup();
-	config->SetCurrentFun(config->GetFunction(0));
-}
-
-void Dialog_Interface::ControlDialogOnChar( wxKeyEvent& event )
-{
-// TODO: Implement ControlDialogOnChar
 }
 
 void Dialog_Interface::OnExit( wxCloseEvent& event )
@@ -31,16 +25,9 @@ void Dialog_Interface::DisplayEquationOnButtonClick( wxCommandEvent& event )
 {
 	int selection = ChoiceList->GetSelection();
 	if (selection != wxNOT_FOUND) {
-		//current_config->GetFunction(selection)->OpenDialog(parent);
 		parent->OpenDialog(current_config->GetFunction(selection));
 		parent->CheckHandler("Function Control");
 	}
-}
-
-
-
-void Dialog_Interface::ChoiceTextOnMouseEvents( wxMouseEvent& event )
-{
 }
 
 void Dialog_Interface::ChoiceListOnListBox( wxCommandEvent& event )
@@ -158,12 +145,12 @@ void Dialog_Interface::ArrowCtrlOnSlider( wxCommandEvent& event )
 {
 	current_config->SetArrowsLen(ArrowCtrl->GetValue());
 }
-
+/*
 void Dialog_Interface::Refresh() {
 }
+*/
 
-
-
+// Wczytanie konfiguracji
 void Dialog_Interface::Setup() {
 	MinCtrl->SetValue(current_config->GetX_Min());
 	MaxCtrl->SetValue(current_config->GetX_Max());
@@ -171,12 +158,14 @@ void Dialog_Interface::Setup() {
 	MaxCtrl1->SetValue(current_config->GetY_Max());
 	MinCtrl2->SetValue(current_config->GetZ_Min());
 	MaxCtrl2->SetValue(current_config->GetZ_Max());
+
+	PrecisionCtrl->SetValue(2 * (1 / current_config->GetCutLen()));
+	current_config->SetCurrentFun(current_config->GetCurrentFun());
+	if(current_config->GetPrintOption() == 1)	LengthRadio->SetValue(true);
 	ArrowCtrl->SetValue(current_config->GetArrowsLen());
-	PrecisionCtrl->SetValue(current_config->GetCutLen());
-	PrecisionCtrl->SetTick(current_config->GetCutLen());
-	PlaneCtrl->SetValue(100);
-	PlaneCtrl->SetSelection(20, 60);
-	current_config->SetArrowsLen(50);
+	PlaneEnable->SetValue(current_config->isPlaneEnable());
+
+	DisplayEquation->SetBitmap(current_config->GetCurrentFun()->GetBitmap(), wxTOP);
 }
 
 

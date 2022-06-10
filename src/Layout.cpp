@@ -5,7 +5,7 @@
 // PLEASE DO *NOT* EDIT THIS FILE!
 ///////////////////////////////////////////////////////////////////////////
 
-#include "Layout.h"
+#include "include/Layout.h"
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -753,14 +753,13 @@ HelpDialog::HelpDialog( wxWindow* parent, wxWindowID id, const wxString& title, 
 	wxStaticBoxSizer* HelpSizer;
 	HelpSizer = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, wxT("Help") ), wxVERTICAL );
 
-	HelpText = new wxStaticText( HelpSizer->GetStaticBox(), wxID_ANY, wxT("Obrot - LPM\nPrzyblizenie - Scroll\n\nOdciecie wykresu odbywa sie przez plaszczyzne prostopadla do widoku.\n"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
+	HelpText = new wxStaticText( HelpSizer->GetStaticBox(), wxID_ANY, wxT("Obrot - LPM\nPrzyblizenie - Scroll\n\nOdciecie wykresu odbywa sie przez plaszczyzne rownolegla do widoku.\nNa pasku postepu wyswitlany jest zakres ( przedstawia najbardziej oddalony punkt oraz punkt najblizszy).\nSuwakiem kontrolujemy plaszczyzne odcinajaca strzalki.\n\nAplikacja posiada dwa dialogi : \n- Jeden do kontroli wyswietlanego obszaru\n- Drugi do kontroli parametrow swobodnych\n\n"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
 	HelpText->Wrap( -1 );
 	HelpSizer->Add( HelpText, 0, wxALL, 5 );
 
 
 	this->SetSizer( HelpSizer );
 	this->Layout();
-	HelpSizer->Fit( this );
 
 	this->Centre( wxBOTH );
 

@@ -1,5 +1,5 @@
-#include "MainFrame_Interface.h"
-#include "VectorMatrix.h"
+#include "include/MainFrame_Interface.h"
+#include "include/VectorMatrix.h"
 
 MainFrame_Interface::MainFrame_Interface( wxWindow* parent )
 :
@@ -16,21 +16,17 @@ MainFrame( parent )
 	controldialog = nullptr;
 	if (!load_model("arrow1.geo", *this)) wxMessageBox("Failed to load");
 	
-	Function* gravity = new Gravity_Function();
-	fun_list.push_back(gravity);
-	fun_list.push_back(new My_Function());
-	fun_list.push_back(new My_Function2());
+	fun_list.push_back(new Central_Field());
+	fun_list.push_back(new Sinusoidal_Field());
+	fun_list.push_back(new Vortex_Field());
 
 	current_config = new Config(&fun_list);
-	current_config->SetCurrentFun(gravity);
-
-	create_space(*current_config, data, arrow);
-	current_config->SetPressed(false);
 }
 
 void MainFrame_Interface::OnExit( wxCloseEvent& event )
 {
-if (wxMessageDialog(NULL,"Are you sure you want to exit?", "Question", wxOK | wxCANCEL).ShowModal() == wxID_OK) Destroy();
+	if (wxMessageDialog(NULL,"Are you sure you want to exit?", "Question",
+		wxOK | wxCANCEL).ShowModal() == wxID_OK) Destroy();
 }
 
 void MainFrame_Interface::Refresh( wxUpdateUIEvent& event )
@@ -56,7 +52,6 @@ void MainFrame_Interface::m_ControlPanelSelection( wxCommandEvent& event )
 void MainFrame_Interface::m_FunctionConfigSelection( wxCommandEvent& event )
 {
 	if (Menu_File->IsChecked(Menu_File->FindItem("Function Parameters"))) {
-		//current_config->GetCurrentFun()->OpenDialog(this);
 		OpenDialog(current_config->GetCurrentFun());
 		this->SetFocus();
 	}else {
@@ -71,18 +66,18 @@ void MainFrame_Interface::m_SaveAsSelection( wxCommandEvent& event )
 		return;
 	MyImage = _pic.ConvertToImage();
 	MyImage.SaveFile(fileDialog.GetPath());
-	return;
 }
 
 void MainFrame_Interface::m_QuitSelection( wxCommandEvent& event )
 {
-	if (wxMessageDialog(NULL,"Are you sure you want to exit?", "Question", wxOK | wxCANCEL).ShowModal() == wxID_OK)
+	if (wxMessageDialog(NULL,"Are you sure you want to exit?", "Question",
+		wxOK | wxCANCEL).ShowModal() == wxID_OK)
 	Destroy();
 }
 
 void MainFrame_Interface::m_AboutSelection( wxCommandEvent& event )
 {
-	wxMessageDialog(this, "GFK - Projekt\nContributors:\n\n- Jan Bizoñ\n- Maksym Kazhaiev\n- Micha³ Rogowski\n", "", wxOK).ShowModal();
+	wxMessageDialog(this, "GFK - Projekt\nAuthors:\n\n- Jan Bizoñ\n- Maksym Kazhaiev\n- Micha³ Rogowski\n", "", wxOK).ShowModal();
 }
 
 void MainFrame_Interface::m_HelpSelection( wxCommandEvent& event )
@@ -104,6 +99,7 @@ void MainFrame_Interface::DrawCanvasOnLeftDown( wxMouseEvent& event )
 	current_config->SetPressed(true);
 }
 
+// Funkcja ustawiajaca rotacje po upuszczeniu przycisku
 void MainFrame_Interface::DrawCanvasOnLeftUp( wxMouseEvent& event )
 {
 	double x = current_config->GetStartX();
@@ -141,7 +137,6 @@ void MainFrame_Interface::CheckHandler(std::string name) {
 	else if (Menu_File->FindItem(name) != wxNOT_FOUND) {
 		if (name == "Function Parameters") {
 			Menu_File->Check(Menu_File->FindItem(name), false);
-			//delete controlparam;
 			controlparam = nullptr;
 		}
 		else if (name == "Control Panel") {
@@ -150,7 +145,7 @@ void MainFrame_Interface::CheckHandler(std::string name) {
 	}
 }
 
-
+// Niestety trzeba recznie podac nazwy funkcji w tym miejscu ( == ".....")
 void MainFrame_Interface::OpenDialog(Function* fun) {
 	CloseDialog(fun);
 	
@@ -158,7 +153,7 @@ void MainFrame_Interface::OpenDialog(Function* fun) {
 		controlparam = new ControlParam_Interface(this, fun);
 	else if (fun->GetName() == "Sinusoidal")
 		controlparam = new ControlParam_Interface(this, fun);
-	else if (fun->GetName() == "Local Vortex")
+	else if (fun->GetName() == "Vortex")
 		controlparam = new ControlParam_Interface(this, fun);
 	controlparam->Show();
 	Menu_File->Check(Menu_File->FindItem("Function Parameters"), true);
@@ -166,7 +161,6 @@ void MainFrame_Interface::OpenDialog(Function* fun) {
 }
 
 void MainFrame_Interface::CloseDialog(Function* fun) {
-	//ControlParam_Interface* dialog = fun->GetDialog();
 	if (controlparam) {
 		controlparam->Close();
 		delete controlparam;

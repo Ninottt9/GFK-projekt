@@ -275,7 +275,6 @@
             <property name="window_extra_style"></property>
             <property name="window_name"></property>
             <property name="window_style"></property>
-            <event name="OnChar">ControlDialogOnChar</event>
             <event name="OnClose">OnExit</event>
             <object class="wxBoxSizer" expanded="0">
                 <property name="minimum_size"></property>
@@ -2391,7 +2390,7 @@
                 </object>
             </object>
         </object>
-        <object class="Dialog" expanded="0">
+        <object class="Dialog" expanded="1">
             <property name="aui_managed">0</property>
             <property name="aui_manager_style">wxAUI_MGR_DEFAULT</property>
             <property name="bg"></property>
@@ -4147,7 +4146,7 @@
             <property name="minimum_size"></property>
             <property name="name">HelpDialog</property>
             <property name="pos"></property>
-            <property name="size"></property>
+            <property name="size">578,298</property>
             <property name="style">wxDEFAULT_DIALOG_STYLE</property>
             <property name="subclass">; ; forward_declare</property>
             <property name="title"></property>
@@ -4198,7 +4197,7 @@
                         <property name="gripper">0</property>
                         <property name="hidden">0</property>
                         <property name="id">wxID_ANY</property>
-                        <property name="label">Obrot - LPM&#x0A;Przyblizenie - Scroll&#x0A;&#x0A;Odciecie wykresu odbywa sie przez plaszczyzne prostopadla do widoku.&#x0A;</property>
+                        <property name="label">Obrot - LPM&#x0A;Przyblizenie - Scroll&#x0A;&#x0A;Odciecie wykresu odbywa sie przez plaszczyzne rownolegla do widoku.&#x0A;Na pasku postepu wyswitlany jest zakres ( przedstawia najbardziej oddalony punkt oraz punkt najblizszy).&#x0A;Suwakiem kontrolujemy plaszczyzne odcinajaca strzalki.&#x0A;&#x0A;Aplikacja posiada dwa dialogi : &#x0A;- Jeden do kontroli wyswietlanego obszaru&#x0A;- Drugi do kontroli parametrow swobodnych&#x0A;&#x0A;</property>
                         <property name="markup">0</property>
                         <property name="max_size"></property>
                         <property name="maximize_button">0</property>

@@ -34,14 +34,7 @@ W tej wersji program potrafi sam dobrać długość strzałek tak, aby najdłuż
 + https://forum.dynamobim.com/t/vector-field-visualization/26862
 
 
-### Projekt aplikacji:
-
-Moja wstępna propozycja na strukturę aplikacji. Wygenerowana została w wxFormBuilder-ze. Oczywiście możemy to wykonać zupełnie inaczej.
-
-<img src="Markdown_img/1.png" width="100">
-
-**Rysunek 1** - Struktura aplikacji
-
-<img src="Markdown_img/2.png" width="400">
-
-**Rysunek 2** - Wygląd aplikacji
+### Strzałki:
++ Długość = 1 w osi 0X (w pozostalych 0)
++ Zaczepiona w 0
++ Zmianna strzalki przez zmiane nazwy pliku na arrow1.geo

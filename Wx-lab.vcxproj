@@ -82,8 +82,9 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>c:\wxWidgets-3.0.5\include\;c:\wxWidgets-3.0.5\include\msvc;$(IncludePath)</IncludePath>
+    <IncludePath>${fileWorkspaceFolder}\include;c:\wxWidgets-3.0.5\include\;c:\wxWidgets-3.0.5\include\msvc;$(IncludePath)</IncludePath>
     <LibraryPath>c:\wxWidgets-3.0.5\lib\vc_x64_lib;$(LibraryPath)</LibraryPath>
+    <SourcePath>$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -149,7 +150,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="arrow1.geo" />
-    <None Include="model1.geo" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="eq1.png" />
@@ -157,28 +157,28 @@
     <Image Include="eq3.png" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Config.h" />
-    <ClInclude Include="ControlParam_Interface.h" />
-    <ClInclude Include="Dialog_Interface.h" />
-    <ClInclude Include="Draw.h" />
-    <ClInclude Include="Function.h" />
-    <ClInclude Include="HelpDialog_Interface.h" />
-    <ClInclude Include="Layout.h" />
-    <ClInclude Include="MainFrame_Interface.h" />
-    <ClInclude Include="Primitives.h" />
-    <ClInclude Include="VectorMatrix.h" />
+    <ClCompile Include="src\Config.cpp" />
+    <ClCompile Include="src\ControlParam_Interface.cpp" />
+    <ClCompile Include="src\Dialog_Interface.cpp" />
+    <ClCompile Include="src\Draw.cpp" />
+    <ClCompile Include="src\Function.cpp" />
+    <ClCompile Include="src\HelpDialog_Interface.cpp" />
+    <ClCompile Include="src\Layout.cpp" />
+    <ClCompile Include="src\MainFrame_Interface.cpp" />
+    <ClCompile Include="src\Source.cpp" />
+    <ClCompile Include="src\VectorMatrix.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Config.cpp" />
-    <ClCompile Include="ControlParam_Interface.cpp" />
-    <ClCompile Include="Dialog_Interface.cpp" />
-    <ClCompile Include="Draw.cpp" />
-    <ClCompile Include="Function.cpp" />
-    <ClCompile Include="HelpDialog_Interface.cpp" />
-    <ClCompile Include="Layout.cpp" />
-    <ClCompile Include="MainFrame_Interface.cpp" />
-    <ClCompile Include="Source.cpp" />
-    <ClCompile Include="VectorMatrix.cpp" />
+    <ClInclude Include="src\include\Config.h" />
+    <ClInclude Include="src\include\ControlParam_Interface.h" />
+    <ClInclude Include="src\include\Dialog_Interface.h" />
+    <ClInclude Include="src\include\Draw.h" />
+    <ClInclude Include="src\include\Function.h" />
+    <ClInclude Include="src\include\HelpDialog_Interface.h" />
+    <ClInclude Include="src\include\Layout.h" />
+    <ClInclude Include="src\include\MainFrame_Interface.h" />
+    <ClInclude Include="src\include\Primitives.h" />
+    <ClInclude Include="src\include\VectorMatrix.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

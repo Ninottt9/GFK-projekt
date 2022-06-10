@@ -20,11 +20,8 @@ class ControlParam_Interface : public ControlParam
 		// Handlers for ControlParam events.
 		void OnExit( wxCloseEvent& event );
 		void Param1CtrlOnSpinCtrlDouble( wxSpinDoubleEvent& event );
-		void Param1CtrlOnSpinCtrlText( wxCommandEvent& event );
 		void Param2CtrlOnSpinCtrlDouble( wxSpinDoubleEvent& event );
-		void Param2CtrlOnSpinCtrlText( wxCommandEvent& event );
 		void Param3CtrlOnSpinCtrlDouble( wxSpinDoubleEvent& event );
-		void Param3CtrlOnSpinCtrlText( wxCommandEvent& event );
 	public:
 		/** Constructor */
 		ControlParam_Interface( wxWindow* parent );

@@ -266,7 +266,7 @@ class HelpDialog : public wxDialog
 
 	public:
 
-		HelpDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE );
+		HelpDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 578,298 ), long style = wxDEFAULT_DIALOG_STYLE );
 
 		~HelpDialog();
 

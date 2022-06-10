@@ -1,7 +1,7 @@
-#include "Draw.h"
-#include "MainFrame_Interface.h"
-#include "VectorMatrix.h"
-#include "Primitives.h"
+#include "include/Draw.h"
+#include "include/MainFrame_Interface.h"
+#include "include/VectorMatrix.h"
+#include "include/Primitives.h"
 #include <fstream>
 #include <array>
 
@@ -18,29 +18,25 @@ void draw_space(Config& config, std::vector<Segment>& data, wxPanel* draw_canvas
 	double scl_y = config.GetScale() / 100;
 	double scl_z = config.GetScale() / 100;
 
+	// rysowanie w czasie przeciagniecia myszy
 	double speed = 5.;
-
 	double l_rot_x = 0;
 	double l_rot_y = 0;
 	if (config.GetPressed()) {
-		l_rot_y = 5 * atan((config.GetStartY() - config.GetEndY()) / draw_canvas->GetSize().GetHeight());
-		l_rot_x = 5 * atan((config.GetStartX() - config.GetEndX()) / draw_canvas->GetSize().GetWidth());
+		l_rot_y = speed * atan((config.GetStartY() - config.GetEndY()) / draw_canvas->GetSize().GetHeight());
+		l_rot_x = speed * atan((config.GetStartX() - config.GetEndX()) / draw_canvas->GetSize().GetWidth());
 	}
 
 	double tr_x = 0.;
 	double tr_y = 0.5;
 	double tr_z = 10.;
 
-	double max = -1000;
-	double min = 1000;
-
 	Multiplication_Matrix scale(scl_x, scl_y, scl_z);
 	Translation_Matrix translation(tr_x, tr_y, tr_z);
-
 	XRotate_Matrix xlocal(l_rot_x);
 	YRotate_Matrix ylocal(l_rot_y);
-	
 	Matrix4 rotation = config.GetRotation();
+
 	Matrix4 transform1 = translation * xlocal * ylocal * rotation * scale; // transformacja obiektu w przestrzeni
 
 	Matrix4 m6;
@@ -54,7 +50,7 @@ void draw_space(Config& config, std::vector<Segment>& data, wxPanel* draw_canvas
 	m7.data[0][3] = draw_canvas->GetSize().GetWidth() / 2;
 	m7.data[1][3] = draw_canvas->GetSize().GetHeight() / 2;
 
-	Matrix4 transform2 = m7 * m6; // transformacja obiektu na oknie
+	Matrix4 transform2 = m7 * m6; // transformacja obiektu na oknie - prz. swiat - okno
 
 	// wyliczenie punktu najblizszego i najdalszego - (odciecie)
 	std::array<Point, 8> box = {
@@ -67,6 +63,10 @@ void draw_space(Config& config, std::vector<Segment>& data, wxPanel* draw_canvas
 		Point(config.GetX_Max(), config.GetY_Min(), config.GetZ_Max()),
 		Point(config.GetX_Max(), config.GetY_Max(), config.GetZ_Max()),
 	};
+
+	double max = -1000;
+	double min = 1000;
+
 	for (Point& point : box) {
 		Vector4 vec, result;
 		vec.Set(point.x, point.y, point.z);
@@ -102,7 +102,7 @@ void draw_space(Config& config, std::vector<Segment>& data, wxPanel* draw_canvas
 		double b = segment.color.B;
 		dc.SetPen(wxPen(wxColour(r, g, b)));
 
-		// usuniecie strzalek z poza obszaru widocznosci
+		// usuniecie strzalek spoza obszaru widocznosci i ....
 		double clipping = -2.0;
 		if ((startPoint.GetZ() > clipping && endPoint.GetZ() <= clipping) || (endPoint.GetZ() > clipping && startPoint.GetZ() <= clipping)) {
 			
@@ -202,15 +202,16 @@ void create_space(Config& config, std::vector<Segment>& data, std::vector<Segmen
 				dir_x = x, dir_y = y, dir_z = z;
 
 				if (config.GetCurrentFun()) {
-					config.GetCurrentFun()->calc(dir_x, dir_y, dir_z);
+					config.GetCurrentFun()->Transform(dir_x, dir_y, dir_z);
 					double r = sqrt(dir_x * dir_x + dir_y * dir_y + dir_z * dir_z);
-					if (r == NAN) r = 0.0;
+					if (r == NAN || r > 5.) r = 0.0; // pozbycie sie artefaktow
 					if (r < min_size) min_size = r;
 					if (r > max_size) max_size = r;
 
 					add_arrow(config, Point(x, y, z), Point(dir_x, dir_y, dir_z), arrow, data);
 				}
 			}
+	// ustalanie koloru - (....color.R = r_danej_strzalki )
 	if (config.GetPrintOption() == 0) {
 		for (auto& point : data) {
 			point.color.R = (point.color.R - min_size) <= ((max_size - min_size)/2.) ?
@@ -253,6 +254,7 @@ void add_arrow(Config& config, Point& position, Point& direction, std::vector<Se
 			point.color = color;
 		}
 
+		// odpowiednie ustawienie strzalki - kierunek i polozenie punktu startowego
 		transform_line(z_rotate, &point);
 		transform_line(y_rotate, &point);
 		point += position;
