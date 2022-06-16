@@ -33,6 +33,10 @@ W tej wersji program potrafi sam dobrać długość strzałek tak, aby najdłuż
 + https://chart-studio.plotly.com/~empet/14971.embed
 + https://forum.dynamobim.com/t/vector-field-visualization/26862
 
+===============================================================================
+
+### Uruchomienie
+Do zmiennych środowiskowych należy dodać ścieżkę do bibliotek WxWidgets. Wymagane biblioteki zostały załączone w folderze bin.
 
 ### Strzałki:
 + Długość = 1 w osi 0X (w pozostalych 0)

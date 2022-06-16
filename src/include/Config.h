@@ -2,9 +2,10 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "include/Function.h"
 #include "include/VectorMatrix.h"
-#include <vector>
 
-// Klasa przechowujaca aktualna konfiguracje
+/***
+@brief Klasa przechowujaca aktualna konfiguracje
+*/
 class Config {
 public:
 	Config(std::vector<Function*>* function_ptr);

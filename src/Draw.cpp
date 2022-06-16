@@ -19,7 +19,7 @@ void draw_space(Config& config, std::vector<Segment>& data, wxPanel* draw_canvas
 	double scl_z = config.GetScale() / 100;
 
 	// rysowanie w czasie przeciagniecia myszy
-	double speed = 5.;
+	double speed = 5.;							// szybkoœæ obrotu
 	double l_rot_x = 0;
 	double l_rot_y = 0;
 	if (config.GetPressed()) {
@@ -27,6 +27,7 @@ void draw_space(Config& config, std::vector<Segment>& data, wxPanel* draw_canvas
 		l_rot_x = speed * atan((config.GetStartX() - config.GetEndX()) / draw_canvas->GetSize().GetWidth());
 	}
 
+	// transformacja obiektu aby znajdowal sie mniej wiecej w srodku ekranu
 	double tr_x = 0.;
 	double tr_y = 0.5;
 	double tr_z = 10.;
@@ -52,7 +53,7 @@ void draw_space(Config& config, std::vector<Segment>& data, wxPanel* draw_canvas
 
 	Matrix4 transform2 = m7 * m6; // transformacja obiektu na oknie - prz. swiat - okno
 
-	// wyliczenie punktu najblizszego i najdalszego - (odciecie)
+	// wyliczenie punktu najblizszego i najdalszego - (do celu rysowania na pasku odciecia)
 	std::array<Point, 8> box = {
 		Point(config.GetX_Min(), config.GetY_Min(), config.GetZ_Min()),
 		Point(config.GetX_Min(), config.GetY_Max(), config.GetZ_Min()),
@@ -80,6 +81,8 @@ void draw_space(Config& config, std::vector<Segment>& data, wxPanel* draw_canvas
 			max = dist;
 		}
 	}
+
+	//skala wprowadzona aby wszystko prawidlowo sie rysowalo
 	double bar_scale = 5;
 	config.SetFurthest(bar_scale * max);
 	config.SetNearest(bar_scale * min);
@@ -102,7 +105,7 @@ void draw_space(Config& config, std::vector<Segment>& data, wxPanel* draw_canvas
 		double b = segment.color.B;
 		dc.SetPen(wxPen(wxColour(r, g, b)));
 
-		// usuniecie strzalek spoza obszaru widocznosci i ....
+		// usuniecie strzalek spoza obszaru widocznosci i dostowanie jej dlugosci
 		double clipping = -2.0;
 		if ((startPoint.GetZ() > clipping && endPoint.GetZ() <= clipping) || (endPoint.GetZ() > clipping && startPoint.GetZ() <= clipping)) {
 			
@@ -202,16 +205,16 @@ void create_space(Config& config, std::vector<Segment>& data, std::vector<Segmen
 				dir_x = x, dir_y = y, dir_z = z;
 
 				if (config.GetCurrentFun()) {
-					config.GetCurrentFun()->Transform(dir_x, dir_y, dir_z);
+					config.GetCurrentFun()->Transform(dir_x, dir_y, dir_z); // Wyliczenie d³ugosci strza³ki w danym kierunku (x,y,z)->(v_x, v_y, v_z)
 					double r = sqrt(dir_x * dir_x + dir_y * dir_y + dir_z * dir_z);
-					if (r == NAN || r > 5.) r = 0.0; // pozbycie sie artefaktow
-					if (r < min_size) min_size = r;
+					if (r == NAN || r > 5.) r = 0.0; // pozbycie sie artefaktow (przy m.in. dzieleniu przez zero)
+					if (r < min_size) min_size = r; // wartoœci niezbêdne w momencie wyliczania koloru
 					if (r > max_size) max_size = r;
 
-					add_arrow(config, Point(x, y, z), Point(dir_x, dir_y, dir_z), arrow, data);
+					add_arrow(config, Point(x, y, z), Point(dir_x, dir_y, dir_z), arrow, data); // transformacja strza³ki i dodanie jej do przestrzeni 
 				}
 			}
-	// ustalanie koloru - (....color.R = r_danej_strzalki )
+	// ustalanie koloru - (....color.R = r_danej_strzalki  w tym momencie)
 	if (config.GetPrintOption() == 0) {
 		for (auto& point : data) {
 			point.color.R = (point.color.R - min_size) <= ((max_size - min_size)/2.) ?
@@ -229,12 +232,12 @@ void add_arrow(Config& config, Point& position, Point& direction, std::vector<Se
 	double max_size = 0;
 
 	double r = sqrt(direction.x * direction.x + direction.y * direction.y + direction.z * direction.z);
-	double p1 = direction.x > 0 ? asin(direction.y / r) : -asin(direction.y / r) + 3.14;
-	double p2 = direction.x > 0 ? -asin(direction.z / r) : asin(direction.z / r);
-	double cut_len = config.GetCutLen();
-	double max_len = config.GetCurrentFun()->GetMax();
-	double scale = cut_len * r / max_len;
-	p2 = fabs(direction.x) < eps ? atan(direction.z/ direction.x) : p2;
+	double p1 = direction.x > 0 ? asin(direction.y / r) : -asin(direction.y / r) + 3.14;	// k¹t 1
+	double p2 = direction.x > 0 ? -asin(direction.z / r) : asin(direction.z / r);			// k¹t 2
+	double cut_len = config.GetCutLen();													// odleg³oœæ miêdzy dwiema przedzia³kami
+	double max_len = config.GetCurrentFun()->GetMax();										// d³ugoœæ najd³u¿szego wektora
+	double scale = cut_len * r / max_len;													// skala strza³ki
+	p2 = fabs(direction.x) < eps ? atan(direction.z/ direction.x) : p2;						// korekta k¹ta w zerze
 	p2 = fabs(direction.z) < eps ? -asin(direction.z / r) : p2;
 
 	for (int i = 0; i < arrow.size(); i++) {
@@ -243,14 +246,14 @@ void add_arrow(Config& config, Point& position, Point& direction, std::vector<Se
 		Multiplication_Matrix leng = Multiplication_Matrix(config.GetArrowsLen() / 100.0, config.GetArrowsLen() / 100.0, config.GetArrowsLen() / 100.0);
 		ZRotate_Matrix z_rotate = p1;
 		YRotate_Matrix y_rotate = p2;
-		transform_line(leng, &point);
+		transform_line(leng, &point); // mnozenie segmentu przez macierz transformacji
 
 		if (config.GetPrintOption() == 1) {
 			Multiplication_Matrix arr_leng = Multiplication_Matrix(scale, scale, scale);
 			transform_line(arr_leng, &point);
 		}
 		else if (config.GetPrintOption() == 0) {
-			Color color(r, 0, r);
+			Color color(r, 0, r);			// ustawienie koloru jako dlugosc wektora - (przygotowanie do dalszego wyliczenia).
 			point.color = color;
 		}
 
@@ -258,7 +261,7 @@ void add_arrow(Config& config, Point& position, Point& direction, std::vector<Se
 		transform_line(z_rotate, &point);
 		transform_line(y_rotate, &point);
 		point += position;
-		data.push_back(point);
+		data.push_back(point); // dodanie do tablicy przechowujacej wszystkie strzalki
 	}
 }
 

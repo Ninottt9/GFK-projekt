@@ -149,14 +149,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="arrow1.geo" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="eq1.png" />
-    <Image Include="eq2.png" />
-    <Image Include="eq3.png" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="src\Config.cpp" />
     <ClCompile Include="src\ControlParam_Interface.cpp" />
     <ClCompile Include="src\Dialog_Interface.cpp" />
@@ -179,6 +171,14 @@
     <ClInclude Include="src\include\MainFrame_Interface.h" />
     <ClInclude Include="src\include\Primitives.h" />
     <ClInclude Include="src\include\VectorMatrix.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\eq1.png" />
+    <Image Include="res\eq2.png" />
+    <Image Include="res\eq3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\arrow1.geo" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
