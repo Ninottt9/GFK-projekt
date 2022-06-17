@@ -14,7 +14,7 @@ MainFrame( parent )
 	MyImage.AddHandler(new wxPNGHandler);
 
 	controldialog = nullptr;
-	if (!load_model((std::string)wxGetCwd() + "/res/arrow1.geo", *this)) wxMessageBox("Failed to load");
+	if (!load_model((std::string)wxGetCwd() + "\\..\\res\\arrow1.geo", *this)) wxMessageBox("Failed to load");
 	
 	fun_list.push_back(new Central_Field());
 	fun_list.push_back(new Sinusoidal_Field());

@@ -32,7 +32,7 @@ private:
 
 class Central_Field : public Function {
 public:
-	Central_Field() : Function((std::string) wxGetCwd() + "\\res\\eq1.png", "Central"), a{1}, b{1}, c{1} {}
+	Central_Field() : Function((std::string) wxGetCwd() + "\\..\\res\\eq1.png", "Central"), a{1}, b{1}, c{1} {}
 	void Transform(double& x, double& y, double& z) {
 		double r = sqrt(x * x + y * y + z * z);
 		x *= a * b * c /(r*r);
@@ -55,7 +55,7 @@ private:
 
 class Sinusoidal_Field : public Function {
 public:
-	Sinusoidal_Field() : a{ 1 }, b{ 1 }, c{ 1 }, Function((std::string)wxGetCwd() + "\\res\\eq2.png", "Sinusoidal") {}
+	Sinusoidal_Field() : a{ 1 }, b{ 1 }, c{ 1 }, Function((std::string)wxGetCwd() + "\\..\\res\\eq2.png", "Sinusoidal") {}
 	void Transform(double& x, double& y, double& z) {
 		double r = sqrt(x * x + y * y + z * z);
 		double buff_x = x;
@@ -82,7 +82,7 @@ private:
 
 class Vortex_Field : public Function {
 public:
-	Vortex_Field() : a{ 1 }, b{ 1 }, c{ 1 }, Function((std::string)wxGetCwd() + "\\res\\eq3.png", "Vortex") {}
+	Vortex_Field() : a{ 1 }, b{ 1 }, c{ 1 }, Function((std::string)wxGetCwd() + "\\..\\res\\eq3.png", "Vortex") {}
 	void Transform(double& x, double& y, double& z) {
 		double r = sqrt(x * x + y * y + z * z);
 		double x_buff = x; 
