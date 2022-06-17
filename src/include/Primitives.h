@@ -1,5 +1,8 @@
 #pragma once
 
+/**
+* @brief Punkt w przestrzeni
+*/
 struct Point {
     float x, y, z;
     Point(float _x, float _y, float _z) : x(_x), y(_y), z(_z) {}
@@ -14,12 +17,17 @@ inline Point operator+(Point& point1, Point& point2) {
     return Point(point1.x + point2.x, point1.y + point2.y, point1.z + point2.z);
 }
 
-
+/**
+* @brief Kolor RGB
+*/
 struct Color {
     double R, G, B;
     Color(double _R, double _G, double _B) : R(_R), G(_G), B(_B) {}
 };
 
+/**
+* @brief Odcinek w przestrzeni
+*/
 struct Segment {
     Point begin, end;
     Color color;

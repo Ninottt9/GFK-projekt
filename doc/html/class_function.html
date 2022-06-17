@@ -70,6 +70,9 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>Klasa opisujaca funkcję wektorową - do przeciążenia.  
+ <a href="class_function.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="_function_8h_source.html">Function.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for Function:</div>
@@ -88,12 +91,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afdf45e449c823e99d86dadbc91883e61"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_function.html#afdf45e449c823e99d86dadbc91883e61">Function</a> (std::string bitmap_url, std::string name)</td></tr>
 <tr class="separator:afdf45e449c823e99d86dadbc91883e61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7d22a3dd9977b623ded93289420c2f7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_function.html#ab7d22a3dd9977b623ded93289420c2f7">Transform</a> (double &amp;x, double &amp;y, double &amp;z)</td></tr>
+<tr class="memdesc:ab7d22a3dd9977b623ded93289420c2f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Przekształca pozycję wektora na jego długość w poszczególnych kierunkach.  <a href="class_function.html#ab7d22a3dd9977b623ded93289420c2f7">More...</a><br /></td></tr>
 <tr class="separator:ab7d22a3dd9977b623ded93289420c2f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16b839254b6501c03d803a7d354d5112"><td class="memItemLeft" align="right" valign="top">const wxBitmap &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_function.html#a16b839254b6501c03d803a7d354d5112">GetBitmap</a> () const</td></tr>
+<tr class="memdesc:a16b839254b6501c03d803a7d354d5112"><td class="mdescLeft">&#160;</td><td class="mdescRight">Zwraca bitmap-e funkcji.  <a href="class_function.html#a16b839254b6501c03d803a7d354d5112">More...</a><br /></td></tr>
 <tr class="separator:a16b839254b6501c03d803a7d354d5112"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a134aaa018d845f664c5438de7c9da62b"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_function.html#a134aaa018d845f664c5438de7c9da62b">GetName</a> () const</td></tr>
+<tr class="memdesc:a134aaa018d845f664c5438de7c9da62b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Zwraca nazwę funkcji.  <a href="class_function.html#a134aaa018d845f664c5438de7c9da62b">More...</a><br /></td></tr>
 <tr class="separator:a134aaa018d845f664c5438de7c9da62b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a08947736cf4e5a2c397bcb75f8a2d643"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_function.html#a08947736cf4e5a2c397bcb75f8a2d643">GetMax</a> () const</td></tr>
+<tr class="memdesc:a08947736cf4e5a2c397bcb75f8a2d643"><td class="mdescLeft">&#160;</td><td class="mdescRight">Zwraca najwiekszą długość wektora - służy do poźniejszej normalizacji wektorów.  <a href="class_function.html#a08947736cf4e5a2c397bcb75f8a2d643">More...</a><br /></td></tr>
 <tr class="separator:a08947736cf4e5a2c397bcb75f8a2d643"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
@@ -101,7 +108,9 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:a4690d327f6a9b8673a26871f35d00c1d"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_function.html#a4690d327f6a9b8673a26871f35d00c1d">max</a></td></tr>
 <tr class="separator:a4690d327f6a9b8673a26871f35d00c1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >Klasa opisujaca funkcję wektorową - do przeciążenia. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="afdf45e449c823e99d86dadbc91883e61" name="afdf45e449c823e99d86dadbc91883e61"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afdf45e449c823e99d86dadbc91883e61">&#9670;&nbsp;</a></span>Function()</h2>
 
@@ -146,6 +155,8 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Zwraca bitmap-e funkcji. </p>
+
 </div>
 </div>
 <a id="a08947736cf4e5a2c397bcb75f8a2d643" name="a08947736cf4e5a2c397bcb75f8a2d643"></a>
@@ -171,6 +182,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Zwraca najwiekszą długość wektora - służy do poźniejszej normalizacji wektorów. </p>
+
 <p>Reimplemented in <a class="el" href="class_sinusoidal___field.html#a0c2404c22e5f3084b24cb67e6c18abe0">Sinusoidal_Field</a>, and <a class="el" href="class_vortex___field.html#aa871e0ac36f58f404952af8a565aebbd">Vortex_Field</a>.</p>
 
 </div>
@@ -189,6 +202,8 @@ Protected Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Zwraca nazwę funkcji. </p>
 
 </div>
 </div>
@@ -232,7 +247,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="class_central___field.html#ab6a6ee1694445f8b5fbfc3755b0b5253">Central_Field</a>, <a class="el" href="class_sinusoidal___field.html#a2440560da51659b1749fa167a0555b93">Sinusoidal_Field</a>, and <a class="el" href="class_vortex___field.html#afcd7f6b60a64329827f21aa9de6c850c">Vortex_Field</a>.</p>
+<p>Przekształca pozycję wektora na jego długość w poszczególnych kierunkach. </p>
+
+<p>Reimplemented in <a class="el" href="class_central___field.html#a97741b52f90094ae8911e8a66bb1313f">Central_Field</a>, <a class="el" href="class_sinusoidal___field.html#a60f80e490e6e91b54e23ef64a530a4c5">Sinusoidal_Field</a>, and <a class="el" href="class_vortex___field.html#abc94a15251ec08241351a1df8ef10655">Vortex_Field</a>.</p>
 
 </div>
 </div>

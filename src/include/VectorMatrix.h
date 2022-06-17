@@ -4,6 +4,9 @@
 
 /* ========================================================================================== */
 
+/**
+* @brief Wektor 3-wymiarowy - (4-wymiarowoœæ umo¿liwia mno¿enie przez macierze 4x4).
+*/
 struct Vector4 {
     double data[4];
 
@@ -18,6 +21,9 @@ struct Vector4 {
     friend Vector4 operator*(const Vector4 &,double);
 };
 
+/**
+* @brief Macierz 4x4
+*/
 struct Matrix4 {
     double data[4][4];
  
@@ -29,7 +35,9 @@ struct Matrix4 {
 };
 
 
-
+/**
+* @brief Macierz przesuniêcia
+*/
 struct Translation_Matrix : public Matrix4 {
     Translation_Matrix(){
         data[0][0] = 1;
@@ -52,6 +60,9 @@ struct Translation_Matrix : public Matrix4 {
     }
 };
 
+/**
+* @brief Macierz skali
+*/
 struct Multiplication_Matrix : public Matrix4 {
     Multiplication_Matrix() {}
     Multiplication_Matrix(double x, double y, double z) {
@@ -66,6 +77,9 @@ struct Multiplication_Matrix : public Matrix4 {
     }
 };
 
+/**
+* @brief Macierz rotacji wzglêdem osi 0X
+*/
 struct XRotate_Matrix : public Matrix4 {
     XRotate_Matrix() {}
     XRotate_Matrix(double p) {
@@ -84,7 +98,9 @@ struct XRotate_Matrix : public Matrix4 {
     }
 };
 
-
+/**
+* @brief Macierz rotacji wzglêdem osi 0Y
+*/
 struct YRotate_Matrix : public Matrix4 {
     YRotate_Matrix() {}
     YRotate_Matrix(double p) {
@@ -103,6 +119,9 @@ struct YRotate_Matrix : public Matrix4 {
     }
 };
 
+/**
+* @brief Macierz rotacji wzglêdem osi 0Z
+*/
 struct ZRotate_Matrix : public Matrix4 {
     ZRotate_Matrix() {}
     ZRotate_Matrix(double p) {
@@ -121,6 +140,9 @@ struct ZRotate_Matrix : public Matrix4 {
     }
 };
 
+/**
+* @brief Macierz rzutowania
+*/
 struct Projection_Matrix : public Matrix4 {
     Projection_Matrix() {}
     Projection_Matrix(double f, double n, double top, double bottom, double left, double right) {
@@ -131,6 +153,9 @@ struct Projection_Matrix : public Matrix4 {
     }
 };
 
+/**
+* @brief Macierz przekszta³cenia window-space
+*/
 struct WS_Matrix : public Matrix4 {
     WS_Matrix(){
         data[0][0] = 1.0;
@@ -158,7 +183,9 @@ struct WS_Matrix : public Matrix4 {
     }
 };
 
-
+/**
+* @brief Macierz przekszta³cenia window-space (2 wersja)
+*/
 struct WS_Matrix2 : public Matrix4 {
     WS_Matrix2() {
         data[0][0] = 1.0;
