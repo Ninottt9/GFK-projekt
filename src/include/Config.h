@@ -3,33 +3,67 @@
 #include "include/Function.h"
 #include "include/VectorMatrix.h"
 
-/***
-@brief Klasa przechowujaca aktualna konfiguracje
+/**
+*	@brief Klasa przechowujaca aktualna konfiguracje
 */
 class Config {
 public:
+	/**
+	* @brief WskaŸnik do zbioru dostêpnych funkcji
+	*/
 	Config(std::vector<Function*>* function_ptr);
 
-	// Ograniczenia przestrzeni
+	/**
+	* @brief Zwraca doln¹ granicê przestrzeni wektorowej w osi X
+	*/ 
 	double GetX_Min() const;
+	/**
+	* @brief Zwraca górn¹ granicê przestrzeni wektorowej w osi X
+	*/
 	double GetX_Max() const;
+	/**
+	* @brief Zwraca doln¹ granicê przestrzeni wektorowej w osi Y
+	*/
 	double GetY_Min() const;
+	/**
+	* @brief Zwraca górn¹ granicê przestrzeni wektorowej w osi Y
+	*/
 	double GetY_Max() const;
+	/**
+	* @brief Zwraca doln¹ granicê przestrzeni wektorowej w osi Z
+	*/
 	double GetZ_Min() const;
+	/**
+	* @brief Zwraca górn¹ granicê przestrzeni wektorowej w osi Z
+	*/
 	double GetZ_Max() const;
-	// Dlugosc jaka ma dodawac w petli rysujacej
-	double GetCutLen() const;
-	// Aktualnie wyswietlana funkcja
+	/**
+	* @brief Dlugosc jaka ma zostaæ dodana w petli rysujacej
+	*/
+	double GetCutLen() const; 
+	/**
+	* @brief Aktualnie wyswietlana funkcja
+	*/
 	Function* GetCurrentFun();
-	// Kolor / Dlugosc
+	/**
+	* @brief Zwraca tryb wyœwietlania pola wektorowego - Kolor / Dlugosc
+	*/
 	unsigned int GetPrintOption() const;
-	// Dlugosc strzalki
+	/**
+	* @brief Zwraca dlugosc strzalki
+	*/
 	double GetArrowsLen() const;
-	// Odleglosc do ktorej mamy wyswietlac
+	/**
+	* @brief Odleglosc do ktorej mamy wyswietlac - ustawienie Z-buffer-a
+	*/
 	double GetFarPlane() const;
-
-	// Informacje do wyswietlenia na pasku postepu
+	/**
+	* @brief Informacja wyswietlana na pasku postepu - pocz¹tek. Infrormuje o najbli¿ej po³o¿onym punkcie obiektu.
+	*/
 	double GetNearest() const;
+	/**
+	* @brief Informacja wyswietlana na pasku postepu - koniec. Infrormuje o najdalej po³o¿onym punkcie obiektu.
+	*/
 	double GetFurthest() const;
 
 	// Ruch myszki na ekranie

@@ -32,10 +32,9 @@ W tej wersji program potrafi sam dobrać długość strzałek tak, aby najdłuż
 + https://glennmarshall.wordpress.com/2014/10/31/3d-neon-vector-fields/
 + https://chart-studio.plotly.com/~empet/14971.embed
 + https://forum.dynamobim.com/t/vector-field-visualization/26862
-
 ===============================================================================
 
-### Uruchomienie
+### Uruchomienie:
 Do zmiennych środowiskowych należy dodać ścieżkę do bibliotek WxWidgets. Wymagane biblioteki zostały załączone w folderze bin.
 
 ### Strzałki:

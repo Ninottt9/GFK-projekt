@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>My Project: Draw.h Source File</title>
+<title>Wizualizacja pola wektorowego: /d/Uczelnia/semestr4/Grafika/Projekty/GFK-Projekt/GFK-Projekt/src/include/Draw.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">My Project
+   <div id="projectname">Wizualizacja pola wektorowego
    </div>
   </td>
  </tr>
@@ -46,7 +46,6 @@ $(function() {
 /* @license-end */
 </script>
 <div id="main-nav"></div>
-</div><!-- top -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -61,12 +60,17 @@ $(function() {
 </iframe>
 </div>
 
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_b0856f6b0d80ccb263b2f415c91f9e17.html">include</a></li>  </ul>
+</div>
+</div><!-- top -->
 <div class="header">
   <div class="headertitle"><div class="title">Draw.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define _CRT_SECURE_NO_WARNINGS</span></div>
+<a href="_draw_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno"><a class="line" href="_draw_8h.html#af08ec37a8c99d747fb60fa15bc28678b">    2</a></span><span class="preprocessor">#define _CRT_SECURE_NO_WARNINGS</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;string&gt;</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
@@ -81,18 +85,24 @@ $(function() {
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">class </span>wxImage;</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment">// przeksztalcenie odcinka za pomoca macierzy</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keywordtype">void</span> transform_line(<span class="keyword">const</span> <a class="code hl_struct" href="struct_matrix4.html">Matrix4</a>&amp; transform, <a class="code hl_struct" href="struct_segment.html">Segment</a>* seg);</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="_draw_8h.html#a9e339433a0a29fa0a333a74e56ac3d1d">   17</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="_draw_8h.html#a9e339433a0a29fa0a333a74e56ac3d1d">transform_line</a>(<span class="keyword">const</span> <a class="code hl_struct" href="struct_matrix4.html">Matrix4</a>&amp; transform, <a class="code hl_struct" href="struct_segment.html">Segment</a>* seg);</div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment">// wczytanie strzalki</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keywordtype">bool</span> load_model(std::string str, <a class="code hl_class" href="class_main_frame___interface.html">MainFrame_Interface</a>&amp; mainframe);</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="_draw_8h.html#a444f3de128fe338a4ab85aed934185c1">   19</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="_draw_8h.html#a444f3de128fe338a4ab85aed934185c1">load_model</a>(std::string str, <a class="code hl_class" href="class_main_frame___interface.html">MainFrame_Interface</a>&amp; mainframe);</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment">// generacja przestrzeni - wpisuje strzalki do data</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keywordtype">void</span> create_space(<a class="code hl_class" href="class_config.html">Config</a>&amp; config, std::vector&lt;Segment&gt;&amp; data, std::vector&lt;Segment&gt;&amp; arrow);</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="_draw_8h.html#a240031c9f22bb270628a3049a9e7ffb2">   21</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="_draw_8h.html#a240031c9f22bb270628a3049a9e7ffb2">create_space</a>(<a class="code hl_class" href="class_config.html">Config</a>&amp; config, std::vector&lt;Segment&gt;&amp; data, std::vector&lt;Segment&gt;&amp; arrow);</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">// rysuje zawartosc data</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keywordtype">void</span> draw_space(<a class="code hl_class" href="class_config.html">Config</a>&amp; config, std::vector&lt;Segment&gt;&amp; data, wxPanel* draw_canvas, wxBitmap&amp; _pic, wxImage&amp; MyImage);</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="_draw_8h.html#aef6c0cdb9e6cb9484e181b7658b95d26">   23</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="_draw_8h.html#aef6c0cdb9e6cb9484e181b7658b95d26">draw_space</a>(<a class="code hl_class" href="class_config.html">Config</a>&amp; config, std::vector&lt;Segment&gt;&amp; data, wxPanel* draw_canvas, wxBitmap&amp; _pic, wxImage&amp; MyImage);</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment">// dodanie strzalki do przestrzeni - wykorzystana przy generacji prz.</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keywordtype">void</span> add_arrow(<a class="code hl_class" href="class_config.html">Config</a>&amp; config, <a class="code hl_struct" href="struct_point.html">Point</a>&amp; position, <a class="code hl_struct" href="struct_point.html">Point</a>&amp; direction, std::vector&lt;Segment&gt;&amp; arrow, std::vector&lt;Segment&gt;&amp; data);</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="_draw_8h.html#a46890c7fa0c756121a56be63dfb1bddb">   25</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="_draw_8h.html#a46890c7fa0c756121a56be63dfb1bddb">add_arrow</a>(<a class="code hl_class" href="class_config.html">Config</a>&amp; config, <a class="code hl_struct" href="struct_point.html">Point</a>&amp; position, <a class="code hl_struct" href="struct_point.html">Point</a>&amp; direction, std::vector&lt;Segment&gt;&amp; arrow, std::vector&lt;Segment&gt;&amp; data);</div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment">// wyczyszczenie data , generacja nowego</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keywordtype">void</span> update_space(<a class="code hl_class" href="class_config.html">Config</a>&amp; config, std::vector&lt;Segment&gt;&amp; data, std::vector&lt;Segment&gt;&amp; arrow);</div>
-<div class="ttc" id="aclass_config_html"><div class="ttname"><a href="class_config.html">Config</a></div><div class="ttdef"><b>Definition:</b> Config.h:9</div></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="_draw_8h.html#a14d283b25da8de642ae6c87c22a40680">   27</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="_draw_8h.html#a14d283b25da8de642ae6c87c22a40680">update_space</a>(<a class="code hl_class" href="class_config.html">Config</a>&amp; config, std::vector&lt;Segment&gt;&amp; data, std::vector&lt;Segment&gt;&amp; arrow);</div>
+<div class="ttc" id="a_draw_8h_html_a14d283b25da8de642ae6c87c22a40680"><div class="ttname"><a href="_draw_8h.html#a14d283b25da8de642ae6c87c22a40680">update_space</a></div><div class="ttdeci">void update_space(Config &amp;config, std::vector&lt; Segment &gt; &amp;data, std::vector&lt; Segment &gt; &amp;arrow)</div></div>
+<div class="ttc" id="a_draw_8h_html_a240031c9f22bb270628a3049a9e7ffb2"><div class="ttname"><a href="_draw_8h.html#a240031c9f22bb270628a3049a9e7ffb2">create_space</a></div><div class="ttdeci">void create_space(Config &amp;config, std::vector&lt; Segment &gt; &amp;data, std::vector&lt; Segment &gt; &amp;arrow)</div></div>
+<div class="ttc" id="a_draw_8h_html_a444f3de128fe338a4ab85aed934185c1"><div class="ttname"><a href="_draw_8h.html#a444f3de128fe338a4ab85aed934185c1">load_model</a></div><div class="ttdeci">bool load_model(std::string str, MainFrame_Interface &amp;mainframe)</div></div>
+<div class="ttc" id="a_draw_8h_html_a46890c7fa0c756121a56be63dfb1bddb"><div class="ttname"><a href="_draw_8h.html#a46890c7fa0c756121a56be63dfb1bddb">add_arrow</a></div><div class="ttdeci">void add_arrow(Config &amp;config, Point &amp;position, Point &amp;direction, std::vector&lt; Segment &gt; &amp;arrow, std::vector&lt; Segment &gt; &amp;data)</div></div>
+<div class="ttc" id="a_draw_8h_html_a9e339433a0a29fa0a333a74e56ac3d1d"><div class="ttname"><a href="_draw_8h.html#a9e339433a0a29fa0a333a74e56ac3d1d">transform_line</a></div><div class="ttdeci">void transform_line(const Matrix4 &amp;transform, Segment *seg)</div></div>
+<div class="ttc" id="a_draw_8h_html_aef6c0cdb9e6cb9484e181b7658b95d26"><div class="ttname"><a href="_draw_8h.html#aef6c0cdb9e6cb9484e181b7658b95d26">draw_space</a></div><div class="ttdeci">void draw_space(Config &amp;config, std::vector&lt; Segment &gt; &amp;data, wxPanel *draw_canvas, wxBitmap &amp;_pic, wxImage &amp;MyImage)</div></div>
+<div class="ttc" id="aclass_config_html"><div class="ttname"><a href="class_config.html">Config</a></div><div class="ttdoc">Klasa przechowujaca aktualna konfiguracje.</div><div class="ttdef"><b>Definition:</b> Config.h:9</div></div>
 <div class="ttc" id="aclass_main_frame___interface_html"><div class="ttname"><a href="class_main_frame___interface.html">MainFrame_Interface</a></div><div class="ttdef"><b>Definition:</b> MainFrame_Interface.h:27</div></div>
 <div class="ttc" id="astruct_matrix4_html"><div class="ttname"><a href="struct_matrix4.html">Matrix4</a></div><div class="ttdef"><b>Definition:</b> VectorMatrix.h:21</div></div>
 <div class="ttc" id="astruct_point_html"><div class="ttname"><a href="struct_point.html">Point</a></div><div class="ttdef"><b>Definition:</b> Primitives.h:3</div></div>
