@@ -77,6 +77,9 @@
     <ClInclude Include="src\include\VectorMatrix.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\eq1.png">
@@ -88,10 +91,18 @@
     <Image Include="res\eq3.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="res\favicon.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\arrow1.geo">
       <Filter>Resource Files</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Wx-lab.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

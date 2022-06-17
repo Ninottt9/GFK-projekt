@@ -6,7 +6,8 @@ MainFrame_Interface::MainFrame_Interface( wxWindow* parent )
 MainFrame( parent )
 {
 	SetTitle(_("GFK-Projekt"));
-	SetIcon(wxNullIcon);
+	wxIcon icon = wxIcon(wxIconLocation((std::string)wxGetCwd() + "\\..\\res\\favicon.ico"));
+	SetIcon(icon);
 	SetSize(8, 8, 1200, 600);
 	Center();
 
