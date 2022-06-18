@@ -5,7 +5,7 @@ MainFrame_Interface::MainFrame_Interface( wxWindow* parent )
 :
 MainFrame( parent )
 {
-	SetTitle(_("GFK-Projekt"));
+	SetTitle(_("35.Wizualizacja pola wektorowego"));
 	wxIcon icon = wxIcon(wxIconLocation((std::string)wxGetCwd() + "\\..\\res\\favicon.ico"));
 	SetIcon(icon);
 	SetSize(8, 8, 1200, 600);
@@ -22,6 +22,13 @@ MainFrame( parent )
 	fun_list.push_back(new Vortex_Field());
 
 	current_config = new Config(&fun_list);
+}
+
+MainFrame_Interface::~MainFrame_Interface() {
+	if (current_config) delete current_config;
+	for (auto& fun : fun_list) {
+		delete fun;
+	}
 }
 
 void MainFrame_Interface::OnExit( wxCloseEvent& event )

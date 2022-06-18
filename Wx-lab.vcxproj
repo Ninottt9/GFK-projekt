@@ -93,6 +93,7 @@
     <OutDir>.\bin</OutDir>
     <CopyLocalProjectReference>false</CopyLocalProjectReference>
     <CopyLocalDeploymentContent>false</CopyLocalDeploymentContent>
+    <TargetName>35_VectorField</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

@@ -44,6 +44,7 @@ class MainFrame_Interface : public MainFrame
 		/** Constructor */
 		MainFrame_Interface( wxWindow* parent );
 	//// end generated class members
+		~MainFrame_Interface();
 		void CheckHandler(std::string name);
 		void OpenDialog(Function* fun);
 		void CloseDialog(Function* fun);

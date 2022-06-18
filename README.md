@@ -1,7 +1,7 @@
 Wizualizacja pola wektorowego
 ===================================
 ### Uruchomienie:
-Do zmiennych środowiskowych należy dodać ścieżkę do bibliotek WxWidgets. Wymagane biblioteki zostały załączone w folderze bin.
+Jeżeli program nie wczytuje wymaganych bibliotek do zmiennych środowiskowych należy dodać ścieżkę do bibliotek WxWidgets. Wymagane biblioteki zostały załączone w folderze bin.
 
 ### Dodanie strzałki:
 + Długość = 1 w osi 0X (w pozostalych 0)
