@@ -1,7 +1,7 @@
 Wizualizacja pola wektorowego
 ===================================
 ### Uruchomienie:
-Jeżeli program nie wczytuje wymaganych bibliotek do zmiennych środowiskowych należy dodać ścieżkę do bibliotek WxWidgets. Wymagane biblioteki zostały załączone w folderze bin.
+Jeżeli program nie wczytuje wymaganych bibliotek należy dodać ścieżkę do bibliotek WxWidgets-3.1.5. Wymagane biblioteki zostały załączone w folderze bin.
 
 ### Dodanie strzałki:
 + Długość = 1 w osi 0X (w pozostalych 0)
@@ -10,7 +10,3 @@ Jeżeli program nie wczytuje wymaganych bibliotek do zmiennych środowiskowych n
 
 ### Dodanie obrazu funkcji:
 + Rozmiar nie większy niż : 400 x 100 px
-
-### Uruchomienie kompilacji:
-Dodanie do zmiennych środowiskowych zmiennej WX_WIDGETS ze ścieżką do folderu z wxwidgets powinno wystarczyć.
-Korzystamy z pliku .props który powinien się tam znajdować.
