@@ -155,6 +155,9 @@
     <CustomBuildStep>
       <Outputs>%(Outputs)</Outputs>
     </CustomBuildStep>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>$(ProjectDir)\res;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Config.cpp" />
@@ -191,7 +194,7 @@
     <None Include="res\arrow1.geo" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Wx-lab.rc" />
+    <ResourceCompile Include="res\Wx-lab.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
