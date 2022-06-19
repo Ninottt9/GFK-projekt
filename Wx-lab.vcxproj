@@ -59,31 +59,46 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(WX_WIDGETS)\wxwidgets.props" Condition="exists('$(WX_WIDGETS)\wxwidgets.props')" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(WX_WIDGETS)\wxwidgets.props" Condition="exists('$(WX_WIDGETS)\wxwidgets.props')" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(WX_WIDGETS)\wxwidgets.props" Condition="exists('$(WX_WIDGETS)\wxwidgets.props')" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(WX_WIDGETS)\wxwidgets.props" Condition="exists('$(WX_WIDGETS)\wxwidgets.props')" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>.\bin</OutDir>
+    <TargetName>35_VectorField</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>.\bin</OutDir>
+    <TargetName>35_VectorField</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>c:\wxWidgets-3.0.5\include\;c:\wxWidgets-3.0.5\include\msvc;$(IncludePath)</IncludePath>
+    <IncludePath>${fileWorkspaceFolder}\include;c:\wxWidgets-3.0.5\include\;c:\wxWidgets-3.0.5\include\msvc;$(IncludePath)</IncludePath>
     <LibraryPath>c:\wxWidgets-3.0.5\lib\vc_x64_lib;$(LibraryPath)</LibraryPath>
+    <SourcePath>$(SourcePath)</SourcePath>
+    <OutDir>.\bin</OutDir>
+    <TargetName>35_VectorField</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <LibraryPath>c:\wxWidgets-3.0.5\lib\vc_x64_lib;$(LibraryPath)</LibraryPath>
+    <OutDir>.\bin</OutDir>
+    <CopyLocalProjectReference>false</CopyLocalProjectReference>
+    <CopyLocalDeploymentContent>false</CopyLocalDeploymentContent>
+    <TargetName>35_VectorField</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -91,10 +106,11 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -105,25 +121,27 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -134,22 +152,58 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
     </Link>
+    <CustomBuildStep>
+      <Outputs>%(Outputs)</Outputs>
+    </CustomBuildStep>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>$(ProjectDir)\res;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source.cpp" />
+    <ClCompile Include="src\Config.cpp" />
+    <ClCompile Include="src\ControlParam_Interface.cpp" />
+    <ClCompile Include="src\Dialog_Interface.cpp" />
+    <ClCompile Include="src\Draw.cpp" />
+    <ClCompile Include="src\Function.cpp" />
+    <ClCompile Include="src\HelpDialog_Interface.cpp" />
+    <ClCompile Include="src\Layout.cpp" />
+    <ClCompile Include="src\MainFrame_Interface.cpp" />
+    <ClCompile Include="src\Source.cpp" />
+    <ClCompile Include="src\VectorMatrix.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ModalnyDlg.h" />
-    <ClInclude Include="MyFrame.h" />
-    <ClInclude Include="NieModalnyDlg.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="src\include\Config.h" />
+    <ClInclude Include="src\include\ControlParam_Interface.h" />
+    <ClInclude Include="src\include\Dialog_Interface.h" />
+    <ClInclude Include="src\include\Draw.h" />
+    <ClInclude Include="src\include\Function.h" />
+    <ClInclude Include="src\include\HelpDialog_Interface.h" />
+    <ClInclude Include="src\include\Layout.h" />
+    <ClInclude Include="src\include\MainFrame_Interface.h" />
+    <ClInclude Include="src\include\Primitives.h" />
+    <ClInclude Include="src\include\VectorMatrix.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\eq1.png" />
+    <Image Include="res\eq2.png" />
+    <Image Include="res\eq3.png" />
+    <Image Include="res\favicon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\arrow1.geo" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="res\Wx-lab.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
